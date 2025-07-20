@@ -11,6 +11,32 @@ export const Header: React.FC<{
     token: { colorBgContainer },
   } = theme.useToken();
 
+  const menuItems = [{
+    label: "Главная",
+    key:'1',
+    icon: <HomeOutlined />,
+    onClick: () => setCurrentPage('home')
+  },{
+    label: "Корзина",
+    key:'2',
+    icon: <Badge count={cartItemCount} offset={[10, 0]} showZero={false} size="small">
+      <ShoppingCartOutlined />
+    </Badge>,
+    onClick: () => setCurrentPage('cart')
+  },{
+    label: "Избранное",
+    key:'3',
+    icon:<Badge count={favoriteItemCount} offset={[10, 0]} showZero={false} size="small">
+      <HeartOutlined />
+    </Badge>,
+    onClick: () => setCurrentPage('favorites')
+  },{
+    label: isLoggedIn ? 'Профиль' : 'Войти',
+    key:'4',
+    icon: <UserOutlined />,
+    onClick: () => setCurrentPage('profile')
+  }]
+
   return (
     <Layout.Header style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', background: colorBgContainer }} className="shadow-md">
       <div className="text-xl font-bold text-blue-600 cursor-pointer" onClick={() => setCurrentPage('home')}>
@@ -22,24 +48,8 @@ export const Header: React.FC<{
         defaultSelectedKeys={['1']}
         className="flex-grow justify-end"
         style={{ minWidth: 0 }}
-      >
-        <Menu.Item key="1" icon={<HomeOutlined />} onClick={() => setCurrentPage('home')}>
-          Главная
-        </Menu.Item>
-        <Menu.Item key="2" icon={<Badge count={cartItemCount} offset={[10, 0]} showZero={false} size="small">
-          <ShoppingCartOutlined />
-        </Badge>} onClick={() => setCurrentPage('cart')}>
-          Корзина
-        </Menu.Item>
-        <Menu.Item key="3" icon={<Badge count={favoriteItemCount} offset={[10, 0]} showZero={false} size="small">
-          <HeartOutlined />
-        </Badge>} onClick={() => setCurrentPage('favorites')}>
-          Избранное
-        </Menu.Item>
-        <Menu.Item key="4" icon={<UserOutlined />} onClick={() => setCurrentPage('profile')}>
-          {isLoggedIn ? 'Профиль' : 'Войти'}
-        </Menu.Item>
-      </Menu>
+        items={menuItems}
+      />
     </Layout.Header>
   );
 };

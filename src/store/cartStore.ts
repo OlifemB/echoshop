@@ -1,102 +1,102 @@
-import { create } from 'zustand';
-import { persist, createJSONStorage } from 'zustand/middleware';
-import { Product, CartItem } from '@/types';
-import { notification } from 'antd';
+'use client'
 
-// Определяем состояние корзины
+import {Product} from "@/types";
+import {create} from "zustand/index";
+import {notification} from "antd";
+import {createJSONStorage, persist} from "zustand/middleware";
+
 interface CartState {
-  items: CartItem[];
-  addToCart: (product: Product) => void;
-  removeFromCart: (productId: number) => void;
+  items: Map<string, { product: Product; quantity: number }>;
+  cartItemsArray: Array<{ product: Product; quantity: number }>; // Добавлено для оптимизации рендеринга
+  addItem: (product: Product) => void;
+  removeItem: (productId: string) => void;
+  updateQuantity: (productId: string, quantity: number) => void;
+  getTotalPrice: () => number;
   clearCart: () => void;
-  incrementQuantity: (productId: number) => void;
-  decrementQuantity: (productId: number) => void;
 }
 
 export const useCartStore = create<CartState>()(
-  persist(
+  // persist(
     (set, get) => ({
-      items: [],
+      items: new Map(),
 
-      // Добавление товара в корзину
-      addToCart: (product: Product) => {
-        const cart = get();
-        const existingItem = cart.items.find((item) => item.id === product.id);
+      cartItemsArray: [], // Инициализация
 
-        if (existingItem) {
-          // Если товар уже есть, увеличиваем его количество
-          cart.incrementQuantity(product.id);
-        } else {
-          // Иначе добавляем новый товар
-          set((state) => ({
-            items: [...state.items, { ...product, quantity: 1 }],
-          }));
+      addItem: (product) =>
+        set(state => {
+          const newItems = new Map(state.items);
+          if (newItems.has(product.id)) {
+            const item = newItems.get(product.id)!;
+            newItems.set(product.id, {...item, quantity: item.quantity + 1});
+          } else {
+            newItems.set(product.id, {product, quantity: 1});
+          }
           notification.success({
             message: 'Товар добавлен в корзину',
             description: `${product.name} теперь в вашей корзине.`,
             placement: 'topRight',
             duration: 2,
           });
-        }
-      },
+          return {
+            items: newItems,
+            cartItemsArray: Array.from(newItems.values())
+          }; // Обновление массива
+        }),
 
-      // Удаление товара из корзины
-      removeFromCart: (productId: number) => {
-        set((state) => ({
-          items: state.items.filter((item) => item.id !== productId),
-        }));
-        notification.info({
-          message: 'Товар удален из корзины',
-          placement: 'topRight',
-          duration: 2,
+      removeItem: (productId) =>
+        set((state) => {
+          const newItems = new Map(state.items);
+          const productName = newItems.get(productId)?.product.name;
+          newItems.delete(productId);
+          notification.success({
+            message: 'Товар удален из корзины',
+            description: `${productName} удален из корзины.`,
+            placement: 'topRight',
+            duration: 2,
+          });
+          return {
+            items: newItems,
+            cartItemsArray: Array.from(newItems.values())
+          }; // Обновление массива
+        }),
+
+      updateQuantity: (productId, quantity) =>
+        set((state) => {
+          const newItems = new Map(state.items);
+          if (newItems.has(productId)) {
+            const item = newItems.get(productId)!;
+            if (quantity <= 0) {
+              newItems.delete(productId);
+              notification.success({
+                message: 'Товар удален из корзины',
+                description: `${item.product.name} удален из корзины.`,
+                placement: 'topRight',
+                duration: 2,
+              })
+            } else {
+              newItems.set(productId, {...item, quantity});
+            }
+          }
+          return {
+            items: newItems,
+            cartItemsArray: Array.from(newItems.values())
+          }; // Обновление массива
+        }),
+
+      getTotalPrice: () => {
+        let total = 0;
+        get().items.forEach((item) => {
+          total += item.product.price * item.quantity;
         });
+        return total;
       },
 
-      // Полная очистка корзины
-      clearCart: () => set({ items: [] }),
-
-      // Увеличение количества товара
-      incrementQuantity: (productId: number) => {
-        set((state) => ({
-          items: state.items.map((item) =>
-            item.id === productId
-              ? { ...item, quantity: item.quantity + 1 }
-              : item
-          ),
-        }));
-      },
-
-      // Уменьшение количества товара
-      decrementQuantity: (productId: number) => {
-        const itemToDecrement = get().items.find(item => item.id === productId);
-
-        if (itemToDecrement && itemToDecrement.quantity > 1) {
-          set((state) => ({
-            items: state.items.map((item) =>
-              item.id === productId
-                ? { ...item, quantity: item.quantity - 1 }
-                : item
-            ),
-          }));
-        } else {
-          // Если количество равно 1, удаляем товар
-          get().removeFromCart(productId);
-        }
-      },
+      clearCart: () => set({items: new Map(), cartItemsArray: []}), // Обновление массива
     }),
-    {
-      name: 'cart-storage', // Имя для localStorage
-      storage: createJSONStorage(() => localStorage), // Указываем использовать localStorage
-    }
-  )
+  //   {
+  //     name: 'cart-storage', // Имя для localStorage
+  //     storage: createJSONStorage(() => localStorage), // Указываем использовать localStorage
+  //   }
+  // )
 );
 
-// Селекторы для получения производных данных
-export const useCartTotals = () => {
-  const items = useCartStore((state) => state.items);
-
-  const totalItems = items.reduce((total, item) => total + item.quantity, 0);
-  const totalPrice = items.reduce((total, item) => total + item.price * item.quantity, 0);
-
-  return { totalItems, totalPrice };
-}

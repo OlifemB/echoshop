@@ -1,10 +1,10 @@
 import {Button, Card} from "antd";
-import {useMemo} from "react";
-import {mockProducts} from "@/mock/products";
-import {useCartStore, useFavoritesStore} from "@/store";
 import {HeartOutlined, ShoppingCartOutlined} from "@ant-design/icons";
+import {useMemo} from "react";
+import {useCartStore, useFavoritesStore} from "@/store";
+import {mockProducts} from "@/mock/products";
 
-export const ProductDetail: React.FC<{ productId: string; setCurrentPage: (page: string) => void }> = ({ productId, setCurrentPage }) => {
+const ProductPage: React.FC<{ productId: string; setCurrentPage: (page: string) => void }> = ({ productId, setCurrentPage }) => {
   const product = useMemo(() => mockProducts.find((p) => p.id === productId), [productId]);
   const addItemToCart = useCartStore((state) => state.addItem);
   const addFavorite = useFavoritesStore((state) => state.addFavorite);
@@ -90,3 +90,5 @@ export const ProductDetail: React.FC<{ productId: string; setCurrentPage: (page:
     </div>
   );
 };
+
+export default ProductPage;

@@ -14,7 +14,7 @@ export const ProductCard: React.FC<{
   const isProdFavorite = isFavorite(product.id);
 
   const handleToggleFavorite = (e: React.MouseEvent) => {
-    e.stopPropagation(); // Prevent navigating to product page
+    e.stopPropagation(); // Prevent navigating to product page.tsx
     if (isProdFavorite) {
       removeFavorite(product.id);
     } else {

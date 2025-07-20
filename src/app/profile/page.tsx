@@ -1,9 +1,11 @@
+'use client'
+
 import {useUserStore} from "@/store";
 import {useState} from "react";
 import {Avatar, Button, Card, Input, List, message, Modal} from "antd";
 import {UserOutlined} from "@ant-design/icons";
 
-export const UserProfilePage: React.FC<{ setCurrentPage: (page: string) => void }> = ({ setCurrentPage }) => {
+const UserProfilePage: React.FC<{ setCurrentPage: (page: string) => void }> = ({setCurrentPage}) => {
   const user = useUserStore((state) => state.user);
   const login = useUserStore((state) => state.login);
   const logout = useUserStore((state) => state.logout);
@@ -27,7 +29,7 @@ export const UserProfilePage: React.FC<{ setCurrentPage: (page: string) => void 
 
         {user.email ? (
           <div className="flex flex-col items-center">
-            <Avatar size={64} icon={<UserOutlined />} className="mb-4 bg-blue-500" />
+            <Avatar size={64} icon={<UserOutlined/>} className="mb-4 bg-blue-500"/>
             <p className="text-xl font-semibold text-gray-800 mb-4">Добро пожаловать, {user.email}!</p>
             <Button
               danger
@@ -52,7 +54,8 @@ export const UserProfilePage: React.FC<{ setCurrentPage: (page: string) => void 
                       <p className="text-gray-600 mb-2">Дата: {order.date}</p>
                       <ul className="list-disc list-inside text-gray-700 mb-2">
                         {order.items.map((item, idx) => (
-                          <li key={idx}>{item.name} (x{item.quantity}) - {(item.price * item.quantity).toFixed(2)} ₽</li>
+                          <li key={idx}>{item.name} (x{item.quantity})
+                            - {(item.price * item.quantity).toFixed(2)} ₽</li>
                         ))}
                       </ul>
                       <p className="font-bold text-xl text-blue-700">Итого: {order.total.toFixed(2)} ₽</p>
@@ -68,7 +71,7 @@ export const UserProfilePage: React.FC<{ setCurrentPage: (page: string) => void 
             <Button
               type="primary"
               size="large"
-              icon={<UserOutlined />}
+              icon={<UserOutlined/>}
               onClick={() => setIsAuthModalVisible(true)}
               className="bg-blue-500 hover:bg-blue-600 rounded-md py-3 text-lg font-semibold"
             >
@@ -85,7 +88,8 @@ export const UserProfilePage: React.FC<{ setCurrentPage: (page: string) => void 
             <Button key="back" onClick={() => setIsAuthModalVisible(false)} className="rounded-md">
               Отмена
             </Button>,
-            <Button key="submit" type="primary" onClick={handleLogin} className="rounded-md bg-blue-500 hover:bg-blue-600">
+            <Button key="submit" type="primary" onClick={handleLogin}
+                    className="rounded-md bg-blue-500 hover:bg-blue-600">
               Войти
             </Button>,
           ]}
@@ -103,3 +107,5 @@ export const UserProfilePage: React.FC<{ setCurrentPage: (page: string) => void 
     </div>
   );
 };
+
+export default UserProfilePage;

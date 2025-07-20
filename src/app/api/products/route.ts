@@ -13,7 +13,7 @@ const products: Product[] = [
     brand: 'ProBrand',
   },
   {
-    id: 2,
+    id: '2',
     name: 'Смартфон Galaxy S23',
     price: 78000,
     description: 'Флагманский смартфон с потрясающим дисплеем и продвинутой камерой для лучших снимков.',
@@ -22,7 +22,7 @@ const products: Product[] = [
     brand: 'SamMobile',
   },
   {
-    id: 3,
+    id: '3',
     name: 'Беспроводные наушники AirSounds 3',
     price: 19500,
     description: 'Кристально чистый звук и активное шумоподавление. Идеальны для музыки и звонков.',
@@ -31,7 +31,7 @@ const products: Product[] = [
     brand: 'AudioPhile',
   },
   {
-    id: 4,
+    id: '4',
     name: 'Умные часы Watch GT 5',
     price: 25000,
     description: 'Стильные умные часы с функциями отслеживания здоровья, GPS и долгим временем работы от батареи.',
@@ -40,7 +40,7 @@ const products: Product[] = [
     brand: 'Connecta',
   },
   {
-    id: 5,
+    id: '5',
     name: 'Кожаная куртка "Urban Rider"',
     price: 22000,
     description: 'Классическая кожаная куртка, которая добавит вашему образу брутальности и стиля.',
@@ -49,7 +49,7 @@ const products: Product[] = [
     brand: 'StyleWear',
   },
   {
-    id: 6,
+    id: '6',
     name: 'Игровая консоль PlaySphere 5',
     price: 62000,
     description: 'Погрузитесь в мир игр нового поколения с невероятной графикой и скоростью загрузки.',
@@ -58,7 +58,7 @@ const products: Product[] = [
     brand: 'GameCorp',
   },
   {
-    id: 7,
+    id: '7',
     name: 'Джинсы "Classic Fit"',
     price: 7500,
     description: 'Удобные и стильные джинсы на каждый день. Изготовлены из качественного денима.',
@@ -67,7 +67,7 @@ const products: Product[] = [
     brand: 'StyleWear',
   },
   {
-    id: 8,
+    id: '8',
     name: 'Кофемашина "Barista Pro"',
     price: 45000,
     description: 'Автоматическая кофемашина для приготовления идеального эспрессо, капучино и латте у вас дома.',
@@ -76,7 +76,7 @@ const products: Product[] = [
     brand: 'HomeChef',
   },
   {
-    id: 9,
+    id: '9',
     name: 'Рюкзак "Traveler"',
     price: 9800,
     description: 'Вместительный и прочный рюкзак для путешествий и повседневного использования.',
@@ -85,7 +85,7 @@ const products: Product[] = [
     brand: 'ProBrand',
   },
   {
-    id: 10,
+    id: '10',
     name: '4K Телевизор VisionMax 55"',
     price: 89990,
     description: 'Телевизор с диагональю 55 дюймов, разрешением 4K и технологией Smart TV.',
