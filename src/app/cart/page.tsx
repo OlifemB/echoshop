@@ -1,14 +1,57 @@
-import {useCartStore} from "@/store";
-import {Button} from "antd";
-import {ShoppingCartOutlined} from "@ant-design/icons";
-import {CartList} from "@/components/cart/CartList";
-import {CartSummary} from "@/components/cart/CartSummary";
+import { useCartStore, useUserStore } from "@/store"
+import React from "react"
+import { Order } from "@/types"
+import { Button, List, message } from "antd"
+import { CheckOutlined, DeleteOutlined, MinusOutlined, PlusOutlined } from "@ant-design/icons"
+import { ShoppingCartOutlined } from "@ant-design/icons"
+import Image from 'next/image'
 
-const CartPage: React.FC<{ setCurrentPage: (page: string) => void }> = ({setCurrentPage}) => {
-  const cartItems = useCartStore((state) => state.cartItemsArray); // Используем оптимизированный массив
+const CartPage: React.FC<{ setCurrentPage: (page: string) => void }> = ({ setCurrentPage }) => {
+  const cartItems = useCartStore((state) => state.cartItemsArray) // Используем оптимизированный массив
+  const getTotalPrice = useCartStore((state) => state.getTotalPrice)
+  const updateQuantity = useCartStore((state) => state.updateQuantity)
+  const removeItem = useCartStore((state) => state.removeItem)
+  const clearCart = useCartStore((state) => state.clearCart)
+  const addOrder = useUserStore((state) => state.addOrder)
+  const userEmail = useUserStore((state) => state.user.email)
+
+  const handleCheckout = () => {
+    if (cartItems.length === 0) {
+      message.warning('Ваша корзина пуста!').then(() => null)
+      return
+    }
+    if (!userEmail) {
+      message.error('Пожалуйста, войдите в систему, чтобы оформить заказ.')
+      setCurrentPage('profile')
+      return
+    }
+
+    const newOrder: Order = {
+      id: `ORD-${Date.now()}-${Math.floor(Math.random() * 1000)}`,
+      date: new Date().toLocaleDateString('ru-RU', {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit'
+      }),
+      items: cartItems.map(item => ({
+        productId: item.product.id,
+        name: item.product.name,
+        quantity: item.quantity,
+        price: item.product.price,
+      })),
+      total: getTotalPrice(),
+    }
+
+    addOrder(newOrder)
+    clearCart()
+    message.success('Заказ успешно оформлен! Вы можете просмотреть его в своем профиле.')
+    setCurrentPage('profile')
+  }
 
   return (
-    <div className="p-4 md:p-8 bg-gray-50 min-h-screen">
+    <div className="p-4 md:p-8  min-h-screen container mx-auto">
       <h1 className="text-3xl font-bold mb-6 text-gray-800 text-center">Ваша корзина</h1>
 
       {cartItems.length === 0 ? (
@@ -23,13 +66,86 @@ const CartPage: React.FC<{ setCurrentPage: (page: string) => void }> = ({setCurr
       ) : (
         <div className="flex flex-col lg:flex-row gap-8 max-w-6xl mx-auto">
           <div className="lg:w-2/3 bg-white p-6 rounded-lg shadow-md">
-            <CartList/>
+            <List
+              itemLayout="horizontal"
+              dataSource={cartItems}
+              renderItem={(item) => (
+                <List.Item
+                  actions={[
+                    <Button
+                      key={1}
+                      icon={<MinusOutlined/>}
+                      onClick={() => updateQuantity(item.product.id, item.quantity - 1)}
+                      disabled={item.quantity <= 1}
+                      className="rounded-md"
+                    />,
+                    <span key={'span'} className="font-bold text-lg">{item.quantity}</span>,
+                    <Button
+                      key={2}
+                      icon={<PlusOutlined/>}
+                      onClick={() => updateQuantity(item.product.id, item.quantity + 1)}
+                      className="rounded-md"
+                    />,
+                    <Button
+                      key={3}
+                      danger
+                      icon={<DeleteOutlined/>}
+                      onClick={() => removeItem(item.product.id)}
+                      className="rounded-md"
+                    />,
+                  ]}
+                >
+                  <List.Item.Meta
+                    avatar={
+                      <img
+                        className="w-20 h-20 object-cover rounded-md shadow-sm"
+                        src={item.product.image || `https://placehold.co/80x80/CCCCCC/333333?text=Нет+изображения`}
+                        alt={item.product.name}
+                        onError={(e: React.SyntheticEvent<HTMLImageElement>) => {
+                          e.currentTarget.src = `https://placehold.co/80x80/CCCCCC/333333?text=Нет+изображения`
+                          e.currentTarget.onerror = null
+                        }}
+                      />
+                    }
+                    title={<span className="font-semibold text-gray-800">{item.product.name}</span>}
+                    description={
+                      <div className="text-gray-600">
+                        Цена: {item.product.price.toFixed(2)} ₽
+                        <br/>
+                        Итого: {(item.product.price * item.quantity).toFixed(2)} ₽
+                      </div>
+                    }
+                  />
+                </List.Item>
+              )}
+            />
           </div>
-          <CartSummary/>
+          <div className="lg:w-1/3 bg-white p-6 rounded-lg shadow-md h-fit">
+            <h2 className="text-2xl font-bold mb-4 text-gray-800">Итого</h2>
+            <div className="flex justify-between items-center text-xl font-semibold mb-6 text-gray-800">
+              <span>Общая сумма:</span>
+              <span>{getTotalPrice().toFixed(2)} ₽</span>
+            </div>
+            <Button
+              type="primary"
+              size="large"
+              icon={<CheckOutlined/>}
+              onClick={handleCheckout}
+              className="w-full bg-green-500 hover:bg-green-600 rounded-md py-3 text-lg font-semibold"
+            >
+              Оформить заказ
+            </Button>
+            <Button
+              onClick={() => setCurrentPage('home')}
+              className="w-full mt-4 rounded-md"
+            >
+              Продолжить покупки
+            </Button>
+          </div>
         </div>
       )}
     </div>
-  );
-};
+  )
+}
 
-export default CartPage;
+export default CartPage

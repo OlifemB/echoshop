@@ -1,105 +1,53 @@
 'use client'
 
-import {useCallback, useEffect, useState} from "react";
-import {useCartStore, useFavoritesStore, useUserStore} from "@/store";
-import {ProductList} from "@/components/product/ProductList";
-import {Alert, Layout, message, Spin} from "antd";
-import {Header} from "@/components/shared/Header";
-import ProductDetailPage from "@/app/product/[id]/page";
-import CartPage from "@/app/cart/page";
-import FavoritesPage from "@/app/favorites/page";
-import UserProfilePage from "@/app/profile/page";
-import {DummyJsonProduct, Product} from "@/types";
+import ProductList from "@/app/product/page"
+import { Footer } from "@/components/shared/Footer"
+import { Header } from "@/components/shared/Header"
+import { useNavigation } from "@/hooks/useNavigation"
+import { useProductData } from "@/hooks/useProductData"
+import {
+  putStoreData,
+  FAVORITES_STORE_NAME,
+  CART_ITEMS_STORE_NAME
+} from "@/indexDB/setup"
+import { useEffect } from "react"
+import { useCartStore, useFavoritesStore } from "@/store"
+import { Alert, Layout, Spin } from "antd"
+import ProductDetailPage from "@/app/product/[id]/page"
+import CartPage from "@/app/cart/page"
+import FavoritesPage from "@/app/favorites/page"
+import UserProfilePage from "@/app/profile/page"
 
 
 const App: React.FC = () => {
-  const [products, setProducts] = useState<Product[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  const { products, loading, error } = useProductData()
+  const { currentPage, selectedProductId, setCurrentPage } = useNavigation()
 
-  // Fetch products from dummyjson.com
+  // Effect to save Favorites to IndexedDB whenever favoriteItemsArray changes
+  const favoriteItemsArray = useFavoritesStore((state) => state.favoriteItemsArray)
   useEffect(() => {
-    const fetchProducts = async () => {
-      try {
-        setLoading(true);
-        const response = await fetch('https://dummyjson.com/products?limit=100'); // Fetch more products
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        const data = await response.json();
-        // Map DummyJsonProduct to our Product interface
-        const mappedProducts: Product[] = data.products.map((p: DummyJsonProduct) => ({
-          id: String(p.id), // Ensure ID is string
-          name: p.title,
-          description: p.description,
-          price: p.price,
-          image: p.thumbnail, // Use thumbnail as the main image
-          category: p.category,
-          brand: p.brand,
-        }));
-        setProducts(mappedProducts);
-      } catch (e: any) {
-        setError(e.message);
-        message.error(`Ошибка загрузки товаров: ${e.message}`);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchProducts();
-  }, []); // Empty dependency array means this runs once on mount
-
-  // Helper function to parse hash and extract page and product ID
-  const parseHash = useCallback(() => {
-    const hash = window.location.hash.substring(1); // Remove '#'
-    if (!hash || hash === 'home') {
-      return {page: 'home', id: null};
+    if (!loading && typeof window !== 'undefined' && window.indexedDB) {
+      putStoreData(FAVORITES_STORE_NAME, favoriteItemsArray)
+        .catch(err => console.error("Failed to save favorites to IndexedDB:", err))
     }
-    const parts = hash.split('/');
-    if (parts.length === 2 && parts[0] === 'product') {
-      return {page: 'product', id: parts[1]};
-    }
-    return {page: parts[0], id: null};
-  }, []);
+  }, [favoriteItemsArray, loading])
 
-  const [pageState, setPageState] = useState(parseHash());
-  const currentPage = pageState.page;
-  const selectedProductId = pageState.id;
-
-  // Effect to listen for hash changes
+  const cartItemsArray = useCartStore((state) => state.cartItemsArray)
   useEffect(() => {
-    const handleHashChange = () => {
-      setPageState(parseHash());
-    };
-
-    window.addEventListener('hashchange', handleHashChange);
-    return () => {
-      window.removeEventListener('hashchange', handleHashChange);
-    };
-  }, [parseHash]);
-
-  const cartItemCount = useCartStore((state) => Array.from(state.items.values()).reduce((acc, item) => acc + item.quantity, 0));
-  const favoriteItemCount = useFavoritesStore((state) => state.items.size);
-  const userEmail = useUserStore((state) => state.user.email);
-
-  // Updated handleSetPage to manipulate URL hash
-  const handleSetPage = useCallback((page: string, id?: string) => {
-    if (page === 'home' && !id) {
-      window.location.hash = ''; // For home page, clear hash
-    } else if (id) {
-      window.location.hash = `${page}/${id}`;
-    } else {
-      window.location.hash = page;
+    if (!loading && typeof window !== 'undefined' && window.indexedDB) {
+      putStoreData(CART_ITEMS_STORE_NAME, cartItemsArray)
+        .catch(err => console.error("Failed to save cart items to IndexedDB:", err))
     }
-  }, []);
+  }, [cartItemsArray, loading])
+
 
   const renderPage = () => {
     if (loading) {
       return (
         <div className="flex justify-center items-center min-h-[calc(100vh-120px)]">
-          <Spin size="large" tip="Загрузка товаров..."/>
+          <Spin size="large" tip="Загрузка данных..."/>
         </div>
-      );
+      )
     }
 
     if (error) {
@@ -107,62 +55,41 @@ const App: React.FC = () => {
         <div className="flex justify-center items-center min-h-[calc(100vh-120px)]">
           <Alert
             message="Ошибка"
-            description={`Не удалось загрузить товары: ${error}`}
+            description={`Не удалось загрузить данные: ${error}`}
             type="error"
             showIcon
           />
         </div>
-      );
+      )
     }
 
     switch (currentPage) {
       case 'home':
-        return <ProductList products={products} setCurrentPage={handleSetPage}/>;
+        return <ProductList products={products} setCurrentPage={setCurrentPage}/>
       case 'product':
         return selectedProductId ?
-          <ProductDetailPage productId={selectedProductId} products={products} setCurrentPage={handleSetPage}/> :
-          <ProductList products={products} setCurrentPage={handleSetPage}/>;
+          <ProductDetailPage productId={selectedProductId} products={products} setCurrentPage={setCurrentPage}/> :
+          <ProductList products={products} setCurrentPage={setCurrentPage}/>
       case 'cart':
-        return <CartPage setCurrentPage={handleSetPage}/>;
+        return <CartPage setCurrentPage={setCurrentPage}/>
       case 'favorites':
-        return <FavoritesPage setCurrentPage={handleSetPage}/>;
+        return <FavoritesPage setCurrentPage={setCurrentPage}/>
       case 'profile':
-        return <UserProfilePage setCurrentPage={handleSetPage}/>;
+        return <UserProfilePage setCurrentPage={setCurrentPage}/>
       default:
-        return <ProductList products={products} setCurrentPage={handleSetPage}/>;
+        return <ProductList products={products} setCurrentPage={setCurrentPage}/>
     }
-  };
+  }
 
   return (
-    <Layout className="min-h-screen flex flex-col font-sans">
-      <style>
-        {`
-          @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
-          body {
-            font-family: 'Inter', sans-serif;
-          }
-          .ant-card-actions > li > span {
-            width: 100%;
-          }
-          .ant-card-actions button {
-            width: 100%;
-          }
-        `}
-      </style>
-      <Header
-        setCurrentPage={handleSetPage}
-        cartItemCount={cartItemCount}
-        favoriteItemCount={favoriteItemCount}
-        isLoggedIn={!!userEmail}
-      />
+    <Layout className="min-h-screen flex flex-col font-sans !bg-gray-50">
+      <Header/>
+
       <Layout.Content className="flex-grow">
         {renderPage()}
       </Layout.Content>
-      <Layout.Footer style={{textAlign: 'center', background: '#f0f2f5'}} className="shadow-inner mt-auto">
-        EchoShop ©2025 Создано Echo
-      </Layout.Footer>
-    </Layout>
-  );
-};
+      <Footer/>
+    </Layout>)
+}
 
-export default App;
+export default App

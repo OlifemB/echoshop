@@ -1,11 +1,11 @@
 'use client'
 
-import {useUserStore} from "@/store";
-import {useState} from "react";
-import {Avatar, Button, Card, Input, List, message, Modal} from "antd";
-import {UserOutlined} from "@ant-design/icons";
+import { useUserStore } from "@/store";
+import React, { useState } from "react";
+import { Avatar, Button, Card, Input, List, message, Modal } from "antd";
+import { UserOutlined } from "@ant-design/icons";
 
-const UserProfilePage: React.FC<{ setCurrentPage: (page: string) => void }> = ({setCurrentPage}) => {
+const UserProfilePage: React.FC<{ setCurrentPage: (page: string) => void }> = () => {
   const user = useUserStore((state) => state.user);
   const login = useUserStore((state) => state.login);
   const logout = useUserStore((state) => state.logout);
@@ -18,12 +18,12 @@ const UserProfilePage: React.FC<{ setCurrentPage: (page: string) => void }> = ({
       setIsAuthModalVisible(false);
       setEmailInput('');
     } else {
-      message.error('Пожалуйста, введите ваш Email.');
+      message.error('Пожалуйста, введите ваш Email.').then(() => null);
     }
   };
 
   return (
-    <div className="p-4 md:p-8 bg-gray-50 min-h-screen flex items-center justify-center">
+    <div className="p-4 md:p-8 bg-gray-50 min-h-screen flex items-center justify-center container mx-auto">
       <Card className="w-full max-w-2xl rounded-lg shadow-xl p-6 md:p-8 text-center">
         <h1 className="text-3xl font-bold mb-6 text-gray-800">Профиль пользователя</h1>
 
@@ -85,11 +85,19 @@ const UserProfilePage: React.FC<{ setCurrentPage: (page: string) => void }> = ({
           open={isAuthModalVisible}
           onCancel={() => setIsAuthModalVisible(false)}
           footer={[
-            <Button key="back" onClick={() => setIsAuthModalVisible(false)} className="rounded-md">
+            <Button
+              key="back"
+              onClick={() => setIsAuthModalVisible(false)}
+              className="rounded-md"
+            >
               Отмена
             </Button>,
-            <Button key="submit" type="primary" onClick={handleLogin}
-                    className="rounded-md bg-blue-500 hover:bg-blue-600">
+            <Button
+              key="submit"
+              type="primary"
+              onClick={handleLogin}
+              className="rounded-md bg-blue-500 hover:bg-blue-600"
+            >
               Войти
             </Button>,
           ]}

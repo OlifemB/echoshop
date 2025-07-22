@@ -2,14 +2,14 @@ export {
   Button,
   FloatButton,
   Typography,
-  //Layout
+  //Layout -------------------------------------------------------------
   Divider,
   Flex,
   Grid,
   Layout,
   Space,
   Splitter,
-  //Navigation
+  //Navigation -------------------------------------------------------------
   Anchor,
   Breadcrumb,
   Dropdown,
@@ -17,7 +17,7 @@ export {
   Pagination,
   Steps,
   Tabs,
-  //Data Entry
+  //Data Entry -------------------------------------------------------------
   AutoComplete,
   Cascader,
   Checkbox,
@@ -36,7 +36,7 @@ export {
   Transfer,
   TreeSelect,
   Upload,
-  //Data Display
+  //Data Display -------------------------------------------------------------
   Avatar,
   Badge,
   Calendar,
@@ -56,7 +56,7 @@ export {
   Tooltip,
   Tour,
   Tree,
-  //Feedback
+  //Feedback -------------------------------------------------------------
   Alert,
   Drawer,
   message,
@@ -68,7 +68,7 @@ export {
   Skeleton,
   Spin,
   Watermark,
-  //Other
+  //Other -------------------------------------------------------------
   Affix,
   App,
   ConfigProvider,

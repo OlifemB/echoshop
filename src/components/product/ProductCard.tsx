@@ -1,58 +1,64 @@
-import {Product} from "@/types";
-import {useCartStore, useFavoritesStore} from "@/store";
-import {Card, Button} from "antd";
-import {HeartOutlined, ShoppingCartOutlined} from "@ant-design/icons";
+import { Product } from "@/types"
+import { useCartStore, useFavoritesStore } from "@/store"
+import { Card, Button } from "antd"
+import { HeartOutlined, ShoppingCartOutlined } from "@ant-design/icons"
+import Image from "next/image"
+import React from "react"
 
 export const ProductCard: React.FC<{
-  product: Product;
+  product: Product
   setCurrentPage: (page: string, id?: string) => void
-}> = ({product, setCurrentPage}) => {
-  const addItemToCart = useCartStore((state) => state.addItem);
-  const addFavorite = useFavoritesStore((state) => state.addFavorite);
-  const removeFavorite = useFavoritesStore((state) => state.removeFavorite);
-  const isFavorite = useFavoritesStore((state) => state.isFavorite);
-  const isProdFavorite = isFavorite(product.id);
+}> = ({ product, setCurrentPage }) => {
+  const addItemToCart = useCartStore((state) => state.addItem)
+  const addFavorite = useFavoritesStore((state) => state.addFavorite)
+  const removeFavorite = useFavoritesStore((state) => state.removeFavorite)
+  const isFavorite = useFavoritesStore((state) => state.isFavorite)
+  const isProdFavorite = isFavorite(product.id)
 
   const handleToggleFavorite = (e: React.MouseEvent) => {
-    e.stopPropagation(); // Prevent navigating to product page.tsx
+    e.stopPropagation() // Prevent navigating to product page
     if (isProdFavorite) {
-      removeFavorite(product.id);
+      removeFavorite(product.id)
     } else {
-      addFavorite(product);
+      addFavorite(product)
     }
-  };
+  }
 
   return (
     <Card
       hoverable
-      className="w-full h-full flex flex-col rounded-lg shadow-md overflow-hidden transition-all duration-300 hover:shadow-xl"
+      className="w-full h-full  flex flex-col rounded-lg shadow-md overflow-hidden transition-all duration-300 hover:shadow-xl"
       cover={
-        <img
-          alt={product.name}
-          src={product.image}
-          className="w-full h-48 object-cover rounded-t-lg"
-          onError={(e) => {
-            e.currentTarget.src = `https://placehold.co/400x300/CCCCCC/333333?text=Нет+изображения`;
-            e.currentTarget.onerror = null;
-          }}
-        />
+
+        <div className="md:w-1/2 flex justify-center items-center relative min-h-[200px]">
+          <Image
+            fill
+            src={product?.image || 'https://placehold.co/600x450/CCCCCC/333333?text=Нет+изображения'}
+            alt={product?.name || ''}
+            sizes="100vw"
+            style={{ objectFit: 'contain' }}
+            onError={(e) => {
+              e.currentTarget.onerror = null
+            }}
+          />
+        </div>
       }
       actions={[
         <Button
-          key={'ShoppingCartOutlined'}
+          key={'1'}
           type="primary"
           icon={<ShoppingCartOutlined/>}
           onClick={(e) => {
-            e.stopPropagation();
-            addItemToCart(product);
+            e.stopPropagation()
+            addItemToCart(product)
           }}
           className="w-full bg-blue-500 hover:bg-blue-600 rounded-md"
         >
           В корзину
         </Button>,
         <Button
-          key={'HeartOutlined'}
-          icon={<HeartOutlined style={{color: isProdFavorite ? 'red' : 'inherit'}}/>}
+          key={'2'}
+          icon={<HeartOutlined style={{ color: isProdFavorite ? 'red' : 'inherit' }}/>}
           onClick={handleToggleFavorite}
           className="w-full rounded-md"
         >
@@ -72,5 +78,5 @@ export const ProductCard: React.FC<{
         }
       />
     </Card>
-  );
-};
+  )
+}
