@@ -1,3 +1,5 @@
+'use client'
+
 import { useNavigation } from "@/hooks/useNavigation";
 import React from "react";
 import { useFavoritesStore } from "@/store";

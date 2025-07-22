@@ -1,8 +1,10 @@
+'use client'
+
 import React, { useMemo } from "react"
-import { ErrorComponent } from "@/components/shared/Error";
-import { Spinner } from "@/components/shared/Spinner";
 import { useNavigation } from "@/hooks/useNavigation";
 import { useProductData } from "@/hooks/useProductData";
+import { ErrorComponent } from "@/components/shared/Error";
+import { Spinner } from "@/components/shared/Spinner";
 import { Button, Card } from "antd"
 import { useCartStore, useFavoritesStore } from "@/store"
 import { HeartOutlined, ShoppingCartOutlined } from "@ant-design/icons"

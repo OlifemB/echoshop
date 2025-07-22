@@ -1,3 +1,5 @@
+'use client'
+
 import { useNavigation } from "@/hooks/useNavigation";
 import { useCartStore, useUserStore } from "@/store"
 import React from "react"
