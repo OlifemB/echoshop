@@ -33,9 +33,11 @@ export const ProductCard: React.FC<{
         <div className="md:w-1/2 flex justify-center items-center relative min-h-[200px]">
           <Image
             fill
+            sizes="(max-width: 768px) 100%"
+            priority={false}
+            loading="lazy"
             src={product?.image || 'https://placehold.co/600x450/CCCCCC/333333?text=Нет+изображения'}
             alt={product?.name || ''}
-            sizes="100vw"
             style={{ objectFit: 'contain' }}
             onError={(e) => {
               e.currentTarget.onerror = null

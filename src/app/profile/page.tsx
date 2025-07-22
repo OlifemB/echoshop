@@ -1,11 +1,13 @@
 'use client'
 
-import { useUserStore } from "@/store";
 import React, { useState } from "react";
+// import { useNavigation } from "@/hooks/useNavigation";
+import { useUserStore } from "@/store";
 import { Avatar, Button, Card, Input, List, message, Modal } from "antd";
 import { UserOutlined } from "@ant-design/icons";
 
-const UserProfilePage: React.FC<{ setCurrentPage: (page: string) => void }> = () => {
+const UserProfilePage: React.FC = () => {
+  // const { setCurrentPage } = useNavigation()
   const user = useUserStore((state) => state.user);
   const login = useUserStore((state) => state.login);
   const logout = useUserStore((state) => state.logout);

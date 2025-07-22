@@ -1,13 +1,14 @@
+import { useNavigation } from "@/hooks/useNavigation";
 import { useCartStore, useUserStore } from "@/store"
 import React from "react"
 import { Order } from "@/types"
 import { Button, List, message } from "antd"
 import { CheckOutlined, DeleteOutlined, MinusOutlined, PlusOutlined } from "@ant-design/icons"
 import { ShoppingCartOutlined } from "@ant-design/icons"
-import Image from 'next/image'
 
-const CartPage: React.FC<{ setCurrentPage: (page: string) => void }> = ({ setCurrentPage }) => {
-  const cartItems = useCartStore((state) => state.cartItemsArray) // Используем оптимизированный массив
+const CartPage: React.FC = () => {
+  const { setCurrentPage } = useNavigation()
+  const cartItems = useCartStore((state) => state.cartItemsArray)
   const getTotalPrice = useCartStore((state) => state.getTotalPrice)
   const updateQuantity = useCartStore((state) => state.updateQuantity)
   const removeItem = useCartStore((state) => state.removeItem)

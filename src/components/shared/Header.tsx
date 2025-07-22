@@ -1,8 +1,8 @@
+import React from "react";
 import { useNavigation } from "@/hooks/useNavigation";
 import { useCartStore, useFavoritesStore, useUserStore } from "@/store";
 import { Badge, Layout, Menu } from "antd";
 import { HeartOutlined, HomeOutlined, ShoppingCartOutlined, UserOutlined } from "@ant-design/icons";
-import React from "react";
 
 export const Header: React.FC = () => {
   const { setCurrentPage } = useNavigation();

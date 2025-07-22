@@ -1,16 +1,18 @@
 'use client'
 
-import { Product } from "@/types"
 import React, { useCallback, useEffect, useMemo, useState } from "react"
+import { ErrorComponent } from "@/components/shared/Error";
+import { Spinner } from "@/components/shared/Spinner";
+import { useNavigation } from "@/hooks/useNavigation";
+import { useProductData } from "@/hooks/useProductData";
 import { Slider, Input, Select, Button } from 'antd'
 import { ProductCard } from "@/components/product/ProductCard"
 import { SearchOutlined } from '@ant-design/icons'
 import { useDebounce } from '@/hooks/useDebounce'
 
-const ProductList: React.FC<{ products: Product[]; setCurrentPage: (page: string, id?: string) => void }> = ({
-  products,
-  setCurrentPage
-}) => {
+const ProductList: React.FC = () => {
+  const { setCurrentPage } = useNavigation()
+  const { products, loading, error } = useProductData()
   const [searchTerm, setSearchTerm] = useState('')
   const [selectedCategories, setSelectedCategories] = useState<string[]>([])
   const [selectedBrands, setSelectedBrands] = useState<string[]>([])
@@ -53,6 +55,14 @@ const ProductList: React.FC<{ products: Product[]; setCurrentPage: (page: string
       return matchesSearch && matchesCategory && matchesPrice && matchesBrand
     })
   }, [searchTerm, selectedCategories, debouncedPriceRange, selectedBrands, products])
+
+  if (loading) {
+    return <Spinner />
+  }
+
+  if (error) {
+    return <ErrorComponent message={error} />
+  }
 
   return (
     <div className="p-4 md:p-8 min-h-screen container mx-auto">

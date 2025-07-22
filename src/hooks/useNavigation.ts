@@ -1,21 +1,13 @@
-'use client'
-
 import { useCallback, useEffect, useState } from "react"
 
 export const useNavigation = () => {
   const parseHash = useCallback(() => {
     if (typeof window === 'undefined') {
-      return {
-        page: 'home',
-        id: null
-      }
+      return { page: 'home', id: null }
     }
     const hash = window.location.hash.substring(1)
     if (!hash || hash === 'home') {
-      return {
-        page: 'home',
-        id: null
-      }
+      return { page: 'home', id: null }
     }
     const parts = hash.split('/')
     if (parts.length === 2 && parts[0] === 'product') {
@@ -53,9 +45,5 @@ export const useNavigation = () => {
     }
   }, [])
 
-  return {
-    currentPage: pageState.page,
-    selectedProductId: pageState.id,
-    setCurrentPage: handleSetPage
-  }
+  return { currentPage: pageState.page, selectedProductId: pageState.id, setCurrentPage: handleSetPage }
 }

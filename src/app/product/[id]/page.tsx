@@ -1,16 +1,17 @@
+import React, { useMemo } from "react"
+import { ErrorComponent } from "@/components/shared/Error";
+import { Spinner } from "@/components/shared/Spinner";
+import { useNavigation } from "@/hooks/useNavigation";
+import { useProductData } from "@/hooks/useProductData";
 import { Button, Card } from "antd"
-import { useMemo } from "react"
 import { useCartStore, useFavoritesStore } from "@/store"
 import { HeartOutlined, ShoppingCartOutlined } from "@ant-design/icons"
-import { Product } from "@/types"
 import Image from "next/image"
 
-const ProductDetailPage: React.FC<{
-  productId: string
-  products: Product[]
-  setCurrentPage: (page: string) => void
-}> = ({ productId, products, setCurrentPage }) => {
-  const product = useMemo(() => products.find((p) => p.id === productId), [productId, products])
+const ProductDetailPage: React.FC = () => {
+  const { setCurrentPage, selectedProductId } = useNavigation()
+  const { products, loading, error } = useProductData() // Moved useProductData here
+  const product = useMemo(() => products.find((p) => p.id === selectedProductId), [selectedProductId, products])
   const addItemToCart = useCartStore((state) => state.addItem)
   const addFavorite = useFavoritesStore((state) => state.addFavorite)
   const removeFavorite = useFavoritesStore((state) => state.removeFavorite)
@@ -27,21 +28,31 @@ const ProductDetailPage: React.FC<{
     }
   }
 
+  if (loading) {
+    return <Spinner/>
+  }
+
+  if (error) {
+    return <ErrorComponent message={error}/>
+  }
+
   return (
     <div className="p-4 md:p-8  min-h-screen flex items-center justify-center container mx-auto">
       <Card className="w-full max-w-4xl rounded-lg shadow-xl p-6 md:p-8">
         <div className="flex flex-col md:flex-row gap-8">
           <div className="md:w-1/2 flex justify-center items-center relative">
-              <Image
-                fill
-                src={product?.image || 'https://placehold.co/600x450/CCCCCC/333333?text=Нет+изображения'}
-                alt={product?.name || ''}
-                sizes="100vw"
-                style={{ objectFit: 'contain' }}
-                onError={(e) => {
-                  e.currentTarget.onerror = null
-                }}
-              />
+            <Image
+              fill
+              sizes="(max-width: 768px) 100%"
+              priority={false}
+              loading="lazy"
+              src={product?.image || 'https://placehold.co/600x450/CCCCCC/333333?text=Нет+изображения'}
+              alt={product?.name || ''}
+              style={{ objectFit: 'contain' }}
+              onError={(e) => {
+                e.currentTarget.onerror = null
+              }}
+            />
           </div>
           <div className="md:w-1/2 flex flex-col justify-between">
             <div>
@@ -76,8 +87,10 @@ const ProductDetailPage: React.FC<{
                 {isProdFavorite ? 'В избранном' : 'В избранное'}
               </Button>
             </div>
-            <Button type="link" onClick={() => setCurrentPage('home')}
-                    className="mt-6 self-start text-blue-600 hover:text-blue-800">
+            <Button
+              type="link" onClick={() => setCurrentPage('home')}
+              className="mt-6 self-start text-blue-600 hover:text-blue-800"
+            >
               ← Вернуться к покупкам
             </Button>
           </div>

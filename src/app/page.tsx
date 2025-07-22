@@ -10,7 +10,7 @@ import {
   FAVORITES_STORE_NAME,
   CART_ITEMS_STORE_NAME
 } from "@/indexDB/setup"
-import { useEffect } from "react"
+import React, { useEffect } from "react"
 import { useCartStore, useFavoritesStore } from "@/store"
 import { Alert, Layout, Spin } from "antd"
 import ProductDetailPage from "@/app/product/[id]/page"
@@ -20,8 +20,8 @@ import UserProfilePage from "@/app/profile/page"
 
 
 const App: React.FC = () => {
-  const { products, loading, error } = useProductData()
-  const { currentPage, selectedProductId, setCurrentPage } = useNavigation()
+  const { loading, error } = useProductData()
+  const { currentPage, selectedProductId } = useNavigation()
 
   // Effect to save Favorites to IndexedDB whenever favoriteItemsArray changes
   const favoriteItemsArray = useFavoritesStore((state) => state.favoriteItemsArray)
@@ -65,19 +65,19 @@ const App: React.FC = () => {
 
     switch (currentPage) {
       case 'home':
-        return <ProductList products={products} setCurrentPage={setCurrentPage}/>
+        return <ProductList/>
       case 'product':
-        return selectedProductId ?
-          <ProductDetailPage productId={selectedProductId} products={products} setCurrentPage={setCurrentPage}/> :
-          <ProductList products={products} setCurrentPage={setCurrentPage}/>
+        return selectedProductId
+          ? <ProductDetailPage/>
+          : <ProductList/>
       case 'cart':
-        return <CartPage setCurrentPage={setCurrentPage}/>
+        return <CartPage/>
       case 'favorites':
-        return <FavoritesPage setCurrentPage={setCurrentPage}/>
+        return <FavoritesPage/>
       case 'profile':
-        return <UserProfilePage setCurrentPage={setCurrentPage}/>
+        return <UserProfilePage/>
       default:
-        return <ProductList products={products} setCurrentPage={setCurrentPage}/>
+        return <ProductList/>
     }
   }
 
@@ -89,7 +89,8 @@ const App: React.FC = () => {
         {renderPage()}
       </Layout.Content>
       <Footer/>
-    </Layout>)
+    </Layout>
+  )
 }
 
 export default App
