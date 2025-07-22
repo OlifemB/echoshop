@@ -1,3 +1,5 @@
+'use client'
+
 import {
   CART_ITEMS_STORE_NAME,
   FAVORITES_STORE_NAME,
