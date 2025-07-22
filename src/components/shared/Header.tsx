@@ -18,11 +18,13 @@ export const Header: React.FC = () => {
     label: <Link prefetch={true} href="/">
       Главная
     </Link>,
-  }, {
-    key: 'product',
-    icon: <HomeOutlined/>,
-    label: <Link prefetch={true} href="/product">Магазин</Link>,
-  }, {
+  },
+  //   {
+  //   key: 'product',
+  //   icon: <HomeOutlined/>,
+  //   label: <Link prefetch={true} href="/product">Магазин</Link>,
+  // },
+    {
     key: 'cart',
     icon: <ShoppingCartOutlined/>,
     label: <Link prefetch={true} href="/cart">
