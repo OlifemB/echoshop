@@ -1,11 +1,10 @@
+import Link from "next/link";
 import React from "react";
-import { useNavigation } from "@/hooks/useNavigation";
-import { useCartStore, useFavoritesStore, useUserStore } from "@/store";
+import { useCartStore, useFavoritesStore, useUserStore } from "@/common/store";
 import { Badge, Layout, Menu } from "antd";
 import { HeartOutlined, HomeOutlined, ShoppingCartOutlined, UserOutlined } from "@ant-design/icons";
 
 export const Header: React.FC = () => {
-  const { setCurrentPage } = useNavigation();
   const favoriteItemCount = useFavoritesStore((state) => state.items.size);
   const userEmail = useUserStore((state) => state.user.email);
   const isLoggedIn = !!userEmail;
@@ -14,46 +13,57 @@ export const Header: React.FC = () => {
     .reduce((acc, item) => acc + item.quantity, 0));
 
   const menuItems = [{
-    label: "Главная",
-    key: '1',
+    key: 'home',
     icon: <HomeOutlined/>,
-    onClick: () => setCurrentPage('home')
+    label: <Link prefetch={true} href="/">
+      Главная
+    </Link>,
   }, {
-    label: "Корзина",
-    key: '2',
-    icon: <Badge count={cartItemCount} offset={[10, 0]} showZero={false} size="small">
-      <ShoppingCartOutlined/>
-    </Badge>,
-    onClick: () => setCurrentPage('cart')
+    key: 'product',
+    icon: <HomeOutlined/>,
+    label: <Link prefetch={true} href="/product">Магазин</Link>,
   }, {
-    label: "Избранное",
-    key: '3',
-    icon: <Badge count={favoriteItemCount} offset={[10, 0]} showZero={false} size="small">
-      <HeartOutlined/>
-    </Badge>,
-    onClick: () => setCurrentPage('favorites')
+    key: 'cart',
+    icon: <ShoppingCartOutlined/>,
+    label: <Link prefetch={true} href="/cart">
+      <Badge count={cartItemCount} offset={[10, 0]} showZero={false} size="small">
+        Корзина
+      </Badge>
+    </Link>,
   }, {
-    label: isLoggedIn ? 'Профиль' : 'Войти',
-    key: '4',
+    key: '1',
+    icon: <HeartOutlined/>,
+    label: <Link prefetch={true} href="/favorites">
+      <Badge count={favoriteItemCount} offset={[10, 0]} showZero={false} size="small">
+        Избранное
+      </Badge>
+
+    </Link>,
+  }, {
+    key: 'profile',
     icon: <UserOutlined/>,
-    onClick: () => setCurrentPage('profile')
-  }]
+    label: <Link prefetch={true} href="/profile">
+      {isLoggedIn ? 'Профиль' : 'Войти'}
+    </Link>,
+  },]
+
 
   return (
-    <Layout.Header
-      className="shadow-md flex items-center justify-between sticky top-0 z-20 !bg-white/50 backdrop-blur-xl"
-    >
-      <div className="text-xl font-bold text-blue-600 cursor-pointer" onClick={() => setCurrentPage('home')}>
-        EchoShop
+    <Layout.Header className="shadow-md sticky top-0 z-20 !bg-white/50 backdrop-blur-xl">
+      <div className={'container flex items-center justify-between mx-auto flex-1'}>
+        <div className="text-xl font-bold text-blue-600 cursor-pointer">
+          EchoShop
+        </div>
+
+        <Menu
+          theme="light"
+          mode="horizontal"
+          defaultSelectedKeys={['1']}
+          className="flex-grow justify-end !bg-transparent"
+          style={{ minWidth: 0 }}
+          items={menuItems}
+        />
       </div>
-      <Menu
-        theme="light"
-        mode="horizontal"
-        defaultSelectedKeys={['1']}
-        className="flex-grow justify-end !bg-transparent"
-        style={{ minWidth: 0 }}
-        items={menuItems}
-      />
     </Layout.Header>
-  );
-};
+  )
+}

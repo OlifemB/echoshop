@@ -1,14 +1,12 @@
-'use client'
-
 import {
   CART_ITEMS_STORE_NAME,
   FAVORITES_STORE_NAME,
-  getStoreData,
   PRODUCTS_STORE_NAME,
+  getStoreData,
   putStoreData
-} from "@/indexDB/setup"
-import { useCartStore, useFavoritesStore } from "@/store"
-import { DummyJsonProduct, Product } from "@/types"
+} from "@/common/indexDB/setup"
+import { useCartStore, useFavoritesStore } from "@/common/store"
+import { DummyJsonProduct, Product } from "@/common/types"
 import { message } from "antd"
 import { useEffect, useState } from "react"
 

@@ -1,6 +1,4 @@
-'use client'
-
-import { Product } from "@/types"
+import { Product } from "@/common/types"
 import { create } from "zustand/index"
 import { message } from "antd"
 

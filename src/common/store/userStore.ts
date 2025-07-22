@@ -1,4 +1,4 @@
-import { Order } from "@/types"
+import { Order } from "@/common/types"
 import { create } from "zustand/index"
 import { message } from "antd"
 
