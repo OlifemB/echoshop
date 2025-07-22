@@ -4,6 +4,7 @@ import { Order } from "@/common/types";
 import { CheckOutlined, DeleteOutlined, MinusOutlined, PlusOutlined, ShoppingCartOutlined } from "@ant-design/icons";
 import { Button, List, message } from "antd";
 import { isNil } from "lodash";
+import Image from "next/image";
 import React from 'react';
 
 export const CartList = () => {
@@ -93,14 +94,18 @@ export const CartList = () => {
               >
                 <List.Item.Meta
                   avatar={
-                    <img
-                      className="w-20 h-20 object-cover rounded-md shadow-sm"
+                    <Image
+                      fill
+                      sizes="(max-width: 768px) 100%"
+                      priority={false}
+                      loading="lazy"
                       src={item.product.image || `https://placehold.co/80x80/CCCCCC/333333?text=Нет+изображения`}
                       alt={item.product.name}
                       onError={(e: React.SyntheticEvent<HTMLImageElement>) => {
-                        e.currentTarget.src = `https://placehold.co/80x80/CCCCCC/333333?text=Нет+изображения`
                         e.currentTarget.onerror = null
                       }}
+                      style={{ objectFit: 'contain' }}
+                      className="w-20 h-20 object-cover rounded-md shadow-sm"
                     />
                   }
                   title={<span className="font-semibold text-gray-800">{item.product.name}</span>}
