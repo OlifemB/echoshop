@@ -22,17 +22,16 @@ const saveCartToLocalStorage = (items: Map<string, { product: Product; quantity:
 };
 
 export const useCartStore = create<CartState>((set, get) => ({
-  // Initialize with empty values for SSR to prevent hydration mismatch
   items: new Map(),
   cartItemsArray: [],
 
-  // New action to hydrate from localStorage on client-side
   initializeFromLocalStorage: () => {
     if (typeof window !== 'undefined') {
       const storedCart = localStorage.getItem(CART_STORAGE_KEY);
       if (storedCart) {
         try {
-          const loadedItems = new Map(JSON.parse(storedCart));
+          // Explicitly cast the parsed JSON to the expected array type for Map constructor
+          const loadedItems = new Map(JSON.parse(storedCart) as Array<[string, { product: Product; quantity: number }]>);
           set({
             items: loadedItems,
             cartItemsArray: Array.from(loadedItems.values())
@@ -68,7 +67,7 @@ export const useCartStore = create<CartState>((set, get) => ({
       }
       message.success(`${product!.name} добавлен в корзину!`).then(() => null);
       const updatedCartArray = Array.from(newItems.values());
-      saveCartToLocalStorage(newItems); // Save to localStorage
+      saveCartToLocalStorage(newItems);
       return {
         items: newItems,
         cartItemsArray: updatedCartArray
@@ -82,7 +81,7 @@ export const useCartStore = create<CartState>((set, get) => ({
       newItems.delete(productId);
       message.info(`${productName} удален из корзины.`).then(() => null);
       const updatedCartArray = Array.from(newItems.values());
-      saveCartToLocalStorage(newItems); // Save to localStorage
+      saveCartToLocalStorage(newItems);
       return {
         items: newItems,
         cartItemsArray: updatedCartArray
@@ -102,7 +101,7 @@ export const useCartStore = create<CartState>((set, get) => ({
         }
       }
       const updatedCartArray = Array.from(newItems.values());
-      saveCartToLocalStorage(newItems); // Save to localStorage
+      saveCartToLocalStorage(newItems);
       return {
         items: newItems,
         cartItemsArray: updatedCartArray
@@ -119,7 +118,7 @@ export const useCartStore = create<CartState>((set, get) => ({
 
   clearCart: () => {
     const emptyMap = new Map();
-    saveCartToLocalStorage(emptyMap); // Clear localStorage
+    saveCartToLocalStorage(emptyMap);
     return {
       items: emptyMap,
       cartItemsArray: []

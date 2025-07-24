@@ -8,7 +8,7 @@ interface FavoritesState {
   addFavorite: (product: Product) => void;
   removeFavorite: (productId: string) => void;
   isFavorite: (productId: string) => boolean;
-  initializeFromLocalStorage: () => void; // New action for hydration
+  initializeFromLocalStorage: () => void;
 }
 
 const FAVORITES_STORAGE_KEY = 'echoshop_favorites';
@@ -20,17 +20,16 @@ const saveFavoritesToLocalStorage = (items: Map<string, Product>) => {
 };
 
 export const useFavoritesStore = create<FavoritesState>((set, get) => ({
-  // Initialize with empty values for SSR to prevent hydration mismatch
   items: new Map(),
   favoriteItemsArray: [],
 
-  // New action to hydrate from localStorage on client-side
   initializeFromLocalStorage: () => {
     if (typeof window !== 'undefined') {
       const storedFavorites = localStorage.getItem(FAVORITES_STORAGE_KEY);
       if (storedFavorites) {
         try {
-          const loadedItems = new Map(JSON.parse(storedFavorites));
+          // Explicitly cast the parsed JSON to the expected array type for Map constructor
+          const loadedItems = new Map(JSON.parse(storedFavorites) as Array<[string, Product]>);
           set({
             items: loadedItems,
             favoriteItemsArray: Array.from(loadedItems.values())
@@ -53,7 +52,7 @@ export const useFavoritesStore = create<FavoritesState>((set, get) => ({
         message.info(`${product.name} уже в избранном.`);
       }
       const updatedFavoritesArray = Array.from(newItems.values());
-      saveFavoritesToLocalStorage(newItems); // Save to localStorage
+      saveFavoritesToLocalStorage(newItems);
       return {
         items: newItems,
         favoriteItemsArray: updatedFavoritesArray
@@ -67,7 +66,7 @@ export const useFavoritesStore = create<FavoritesState>((set, get) => ({
       newItems.delete(productId);
       message.info(`${productName} удален из избранного.`).then(() => null);
       const updatedFavoritesArray = Array.from(newItems.values());
-      saveFavoritesToLocalStorage(newItems); // Save to localStorage
+      saveFavoritesToLocalStorage(newItems);
       return {
         items: newItems,
         favoriteItemsArray: updatedFavoritesArray
