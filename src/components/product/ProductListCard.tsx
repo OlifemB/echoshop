@@ -16,6 +16,7 @@ export const ProductListCard: React.FC<{ product: Product }> = ({ product }) => 
 
   const handleToggleFavorite = (e: React.MouseEvent) => {
     e.stopPropagation();
+    e.preventDefault();
     if (isProdFavorite) {
       removeFavorite(product.id);
     } else {
@@ -53,7 +54,6 @@ export const ProductListCard: React.FC<{ product: Product }> = ({ product }) => 
         </div>
       ]}
     >
-      {/* Link to product detail page */}
       <Link href={`/product/${product.id}`} passHref className="cursor-pointer flex-grow">
         <div className="relative min-h-[200px] w-full">
           <Image

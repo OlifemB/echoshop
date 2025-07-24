@@ -103,7 +103,7 @@ export const ProductFilters = () => {
       </div>
 
       <Button
-        onClick={setInitial}
+        onClick={() => setInitial(maxPrice)}
         className="w-full mt-4 rounded-md"
       >
         Сбросить фильтры

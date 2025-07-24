@@ -9,7 +9,7 @@ interface FilterProductsStore {
   setSelectedCategories: (selectedCategory: string[]) => void;
   selectedBrands: string[] | null | undefined;
   setSelectedBrands: (selectedBrand: string[]) => void;
-  setInitial: () => void;
+  setInitial: (maxPrice: number) => void;
 }
 
 export const useFilterProductsStore = create<FilterProductsStore>(
@@ -39,12 +39,12 @@ export const useFilterProductsStore = create<FilterProductsStore>(
         selectedBrands: newSelectedBrand
       }),
 
-    setInitial: () =>
+    setInitial: (maxPrice) =>
       set({
         searchTerm: '',
-        priceRange: [0, 10000],
+        priceRange: [0, maxPrice],
         selectedCategories: null,
         selectedBrands: null,
       })
   })
-)
+);
