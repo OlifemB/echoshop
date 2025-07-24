@@ -2,7 +2,7 @@ import { useProductData } from "@/common/hooks/useProductData";
 import { useCartStore, useFavoritesStore } from "@/common/store";
 import { ErrorComponent } from "@/components/shared/Error";
 import { Spinner } from "@/components/shared/Spinner";
-import { HeartFilled, HeartOutlined, ShoppingCartOutlined } from "@ant-design/icons";
+import { HeartFilled, HeartOutlined, MinusOutlined, PlusOutlined, ShoppingCartOutlined } from "@ant-design/icons";
 import { Button, Card } from "antd";
 import Image from "next/image";
 import Link from "next/link";
@@ -13,6 +13,9 @@ import React, { useMemo } from 'react';
 export const ProductCard: React.FC = () => {
   const { products, loading, error } = useProductData();
   const addItemToCart = useCartStore((state) => state.addItem);
+  const updateQuantity = useCartStore((state) => state.updateQuantity);
+  const cartItemsMap = useCartStore((state) => state.items);
+
   const addFavorite = useFavoritesStore((state) => state.addFavorite);
   const removeFavorite = useFavoritesStore((state) => state.removeFavorite);
   const favoriteItemsMap = useFavoritesStore((state) => state.items);
@@ -25,6 +28,8 @@ export const ProductCard: React.FC = () => {
     , [selectedProductId, products]);
 
   const isProdFavorite = product ? favoriteItemsMap.has(product.id) : false;
+  const currentCartItem = product ? cartItemsMap.get(product.id) : undefined;
+  const currentQuantity = currentCartItem ? currentCartItem.quantity : 0;
 
   if (loading) {
     return <Spinner/>;
@@ -89,15 +94,34 @@ export const ProductCard: React.FC = () => {
               </span>
           </div>
           <div className="flex flex-col sm:flex-row gap-4 mt-6">
-            <Button
-              type="primary"
-              size="large"
-              icon={<ShoppingCartOutlined/>}
-              onClick={() => addItemToCart(product)}
-              className="flex-grow bg-blue-600 hover:bg-blue-700 rounded-lg py-3 px-6 text-lg font-semibold"
-            >
-              Добавить в корзину
-            </Button>
+            {currentQuantity === 0 ? (
+              <Button
+                type="primary"
+                size="large"
+                icon={<ShoppingCartOutlined/>}
+                onClick={() => addItemToCart(product)}
+                className="flex-grow bg-blue-600 hover:bg-blue-700 rounded-lg py-3 px-6 text-lg font-semibold"
+              >
+                Добавить в корзину
+              </Button>
+            ) : (
+              <div className="flex items-center justify-center flex-grow gap-2">
+                <Button
+                  icon={<MinusOutlined/>}
+                  size="large"
+                  onClick={() => updateQuantity(product.id, currentQuantity - 1)}
+                  disabled={currentQuantity <= 0}
+                  className="rounded-lg py-3 px-6 text-lg font-semibold"
+                />
+                <span className="font-bold text-lg min-w-[30px] text-center">{currentQuantity}</span>
+                <Button
+                  icon={<PlusOutlined/>}
+                  size="large"
+                  onClick={() => updateQuantity(product.id, currentQuantity + 1)}
+                  className="rounded-lg py-3 px-6 text-lg font-semibold"
+                />
+              </div>
+            )}
             <Button
               size="large"
               icon={isProdFavorite

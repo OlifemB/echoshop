@@ -4,6 +4,7 @@ import { SearchOutlined } from "@ant-design/icons";
 import { useProductData } from "@/common/hooks/useProductData";
 import { useFilterProductsStore } from "@/common/store/filterProductsStore";
 
+
 export const ProductFilters = () => {
   const { products } = useProductData();
   const {
