@@ -1,83 +1,96 @@
 import React from "react"
 import { Card, Button } from "antd"
 import Image from "next/image"
-import { HeartFilled, HeartOutlined, ShoppingCartOutlined } from "@ant-design/icons"
+import { ArrowRightOutlined, HeartFilled, HeartOutlined, ShoppingCartOutlined } from "@ant-design/icons"
 import { Product } from "@/common/types"
 import { useCartStore, useFavoritesStore } from "@/common/store"
+import Link from "next/link"
 
 
 export const ProductListCard: React.FC<{ product: Product }> = ({ product }) => {
-  const addItemToCart = useCartStore((state) => state.addItem)
-  const addFavorite = useFavoritesStore((state) => state.addFavorite)
-  const removeFavorite = useFavoritesStore((state) => state.removeFavorite)
-  const isFavorite = useFavoritesStore((state) => state.isFavorite)
-  const isProdFavorite = isFavorite(product.id)
+  const addItemToCart = useCartStore((state) => state.addItem);
+  const addFavorite = useFavoritesStore((state) => state.addFavorite);
+  const removeFavorite = useFavoritesStore((state) => state.removeFavorite);
+  const favoriteItemsMap = useFavoritesStore((state) => state.items);
+  const isProdFavorite = favoriteItemsMap.has(product.id);
 
   const handleToggleFavorite = (e: React.MouseEvent) => {
-    e.stopPropagation() // Prevent navigating to product page
+    e.stopPropagation();
     if (isProdFavorite) {
-      removeFavorite(product.id)
+      removeFavorite(product.id);
     } else {
-      addFavorite(product)
+      addFavorite(product);
     }
-  }
+  };
 
   return (
     <Card
       hoverable
-      className="w-full h-full  flex flex-col rounded-lg shadow-md overflow-hidden transition-all duration-300 hover:shadow-xl"
-      cover={
-        <div className="md:w-1/2 flex justify-center items-center relative min-h-[200px]">
+      classNames={{
+        body: 'h-full',
+        actions: 'px-2'
+      }}
+      className="w-full h-full flex flex-col rounded-lg shadow-md overflow-hidden transition-all duration-300 hover:shadow-xl"
+      actions={[
+        <div key={'store'} className={'flex items-center justify-center gap-2 px-4'}>
+          <Button
+            type="primary"
+            icon={<ShoppingCartOutlined/>}
+            className="bg-blue-500 hover:bg-blue-600 rounded-md w-full"
+            onClick={(e) => {
+              e.stopPropagation();
+              addItemToCart(product);
+            }}
+          >
+            В корзину
+          </Button>
+
+          <Button type="text">
+            <Link href={`/product/${product.id}`}>
+              <ArrowRightOutlined/>
+            </Link>
+          </Button>
+        </div>
+      ]}
+    >
+      {/* Link to product detail page */}
+      <Link href={`/product/${product.id}`} passHref className="cursor-pointer flex-grow">
+        <div className="relative min-h-[200px] w-full">
           <Image
             fill
-            sizes="(max-width: 768px) 100%"
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
             priority={false}
             loading="lazy"
             src={product?.image || 'https://placehold.co/600x450/CCCCCC/333333?text=Нет+изображения'}
             alt={product?.name || ''}
             style={{ objectFit: 'contain' }}
             onError={(e) => {
-              e.currentTarget.onerror = null
+              e.currentTarget.onerror = null;
             }}
           />
+
+          <Button
+            type={'text'}
+            key={'like'}
+            icon={isProdFavorite
+              ? <HeartFilled style={{ color: 'red' }}/>
+              : <HeartOutlined style={{ color: 'inherit' }}/>
+            }
+            onClick={handleToggleFavorite}
+            className="rounded-md absolute left-0 top-0"
+          />
         </div>
-      }
-      actions={[
-        <Button
-          key={'store'}
-          type="primary"
-          icon={<ShoppingCartOutlined/>}
-          onClick={(e) => {
-            e.stopPropagation()
-            addItemToCart(product)
-          }}
-          className="w-full bg-blue-500 hover:bg-blue-600 rounded-md"
-        >
-          В корзину
-        </Button>,
-        <Button
-          key={'like'}
-          icon={isProdFavorite
-            ? <HeartFilled style={{ color: 'red' }}/>
-            : <HeartOutlined style={{ color: 'inherit' }}/>
+        <Card.Meta
+          title={<div className="text-lg font-semibold text-gray-800">{product.name}</div>}
+          description={
+            <div className="flex flex-col">
+              <span className="text-xl font-bold text-blue-600 mb-2">{product.price.toFixed(2)} $</span>
+              <span className="text-sm text-gray-500">Категория: {product.category}</span>
+              <span className="text-sm text-gray-500">Бренд: {product.brand}</span>
+            </div>
           }
-          onClick={handleToggleFavorite}
-          className="w-full rounded-md"
-        >
-          {isProdFavorite ? 'В избранном' : 'В избранное'}
-        </Button>,
-      ]}
-    >
-      <Card.Meta
-        title={<div className="text-lg font-semibold text-gray-800">{product.name}</div>}
-        description={
-          <div className="flex flex-col">
-            <span className="text-xl font-bold text-blue-600 mb-2">{product.price.toFixed(2)} ₽</span>
-            <span className="text-sm text-gray-500">Категория: {product.category}</span>
-            <span className="text-sm text-gray-500">Бренд: {product.brand}</span>
-          </div>
-        }
-      />
+        />
+      </Link>
     </Card>
-  )
-}
+  );
+};

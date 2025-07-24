@@ -1,7 +1,7 @@
 'use client'
 
-import ProductFilters from "@/components/product/ProductFilters";
-import ProductList from "@/components/product/ProductList";
+import { ProductFilters } from "@/components/product/ProductFilters";
+import { ProductList } from "@/components/product/ProductList";
 import React from "react"
 
 const Products: React.FC = () => {

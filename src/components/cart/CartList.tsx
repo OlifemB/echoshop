@@ -5,27 +5,29 @@ import { CheckOutlined, DeleteOutlined, MinusOutlined, PlusOutlined, ShoppingCar
 import { Button, List, message } from "antd";
 import { isNil } from "lodash";
 import Image from "next/image";
+import Link from "next/link";
+import { useRouter } from "next/router";
 import React from 'react';
 
-export const CartList = () => {
-  const { setCurrentPage } = useNavigation()
-  const cartItems = useCartStore((state) => state.cartItemsArray)
-  const getTotalPrice = useCartStore((state) => state.getTotalPrice)
-  const updateQuantity = useCartStore((state) => state.updateQuantity)
-  const removeItem = useCartStore((state) => state.removeItem)
-  const clearCart = useCartStore((state) => state.clearCart)
-  const addOrder = useUserStore((state) => state.addOrder)
-  const userEmail = useUserStore((state) => state.user.email)
+export const CartList: React.FC = () => {
+  const cartItems = useCartStore((state) => state.cartItemsArray);
+  const getTotalPrice = useCartStore((state) => state.getTotalPrice);
+  const updateQuantity = useCartStore((state) => state.updateQuantity);
+  const removeItem = useCartStore((state) => state.removeItem);
+  const clearCart = useCartStore((state) => state.clearCart);
+  const addOrder = useUserStore((state) => state.addOrder);
+  const userEmail = useUserStore((state) => state.user.email);
+  const router = useRouter();
 
   const handleCheckout = () => {
     if (cartItems.length === 0) {
-      message.warning('Ваша корзина пуста!').then(() => null)
-      return
+      message.warning('Ваша корзина пуста!').then(() => null);
+      return;
     }
     if (!userEmail) {
-      message.error('Пожалуйста, войдите в систему, чтобы оформить заказ.')
-      setCurrentPage('profile')
-      return
+      message.error('Пожалуйста, войдите в систему, чтобы оформить заказ.');
+      router.push('/profile');
+      return;
     }
 
     const newOrder: Order = {
@@ -44,21 +46,22 @@ export const CartList = () => {
         price: item.product.price,
       })),
       total: getTotalPrice(),
-    }
+    };
 
-    addOrder(newOrder)
-    clearCart()
-    message.success('Заказ успешно оформлен! Вы можете просмотреть его в своем профиле.')
-  }
+    addOrder(newOrder);
+    clearCart();
+    message.success('Заказ успешно оформлен! Вы можете просмотреть его в своем профиле.');
+  };
 
   return (isNil(cartItems) || cartItems.length === 0 ? (
       <div className="text-center text-gray-600 text-lg py-10 bg-white rounded-lg shadow-md max-w-2xl mx-auto">
         <ShoppingCartOutlined className="text-6xl text-gray-400 mb-4"/>
         <p>Ваша корзина пуста.</p>
-        <Button type="primary" onClick={() => setCurrentPage('home')}
-                className="mt-6 bg-blue-500 hover:bg-blue-600 rounded-md">
-          Начать покупки
-        </Button>
+        <Link href="/" passHref>
+          <Button type="primary" className="mt-6 bg-blue-500 hover:bg-blue-600 rounded-md">
+            Начать покупки
+          </Button>
+        </Link>
       </div>
     ) : (
       <div className="flex flex-col lg:flex-row gap-8 max-w-6xl mx-auto">
@@ -95,14 +98,14 @@ export const CartList = () => {
                 <List.Item.Meta
                   avatar={
                     <Image
-                      fill
-                      sizes="(max-width: 768px) 100%"
+                      width={80}
+                      height={80}
                       priority={false}
                       loading="lazy"
                       src={item.product.image || `https://placehold.co/80x80/CCCCCC/333333?text=Нет+изображения`}
                       alt={item.product.name}
                       onError={(e: React.SyntheticEvent<HTMLImageElement>) => {
-                        e.currentTarget.onerror = null
+                        e.currentTarget.onerror = null;
                       }}
                       style={{ objectFit: 'contain' }}
                       className="w-20 h-20 object-cover rounded-md shadow-sm"
@@ -136,12 +139,13 @@ export const CartList = () => {
           >
             Оформить заказ
           </Button>
-          <Button
-            onClick={() => setCurrentPage('home')}
-            className="w-full mt-4 rounded-md"
-          >
-            Продолжить покупки
-          </Button>
+          <Link href="/" passHref>
+            <Button
+              className="w-full mt-4 rounded-md"
+            >
+              Продолжить покупки
+            </Button>
+          </Link>
         </div>
       </div>
     )
