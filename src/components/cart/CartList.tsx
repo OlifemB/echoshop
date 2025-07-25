@@ -1,4 +1,5 @@
 import { useNavigation } from "@/common/hooks/useNavigation";
+import { useWindowSize } from "@/common/hooks/useWindowSize";
 import { useCartStore, useUserStore } from "@/common/store";
 import { Order } from "@/common/types";
 import { CheckOutlined, DeleteOutlined, MinusOutlined, PlusOutlined, ShoppingCartOutlined } from "@ant-design/icons";
@@ -18,6 +19,7 @@ export const CartList: React.FC = () => {
   const addOrder = useUserStore((state) => state.addOrder);
   const userEmail = useUserStore((state) => state.user.email);
   const router = useRouter();
+  const { isMobile } = useWindowSize()
 
   const handleCheckout = () => {
     if (cartItems.length === 0) {
@@ -65,9 +67,9 @@ export const CartList: React.FC = () => {
       </div>
     ) : (
       <div className="flex flex-col lg:flex-row gap-8 max-w-6xl mx-auto">
-        <div className="lg:w-2/3 bg-white p-6 rounded-lg shadow-md">
+        <div className="lg:w-2/3 bg-white p-6 rounded-lg shadow-md flwxz">
           <List
-            itemLayout="horizontal"
+            itemLayout={isMobile ? "vertical" : "horizontal"}
             dataSource={cartItems}
             renderItem={(item) => (
               <List.Item

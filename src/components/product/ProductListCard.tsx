@@ -104,6 +104,7 @@ export const ProductListCard: React.FC<{ product: Product }> = ({ product }) => 
           />
 
           <Button
+            size="large"
             type={'text'}
             key={'like'}
             icon={isProdFavorite
