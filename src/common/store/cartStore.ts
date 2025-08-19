@@ -30,7 +30,6 @@ export const useCartStore = create<CartState>((set, get) => ({
       const storedCart = localStorage.getItem(CART_STORAGE_KEY);
       if (storedCart) {
         try {
-          // Explicitly cast the parsed JSON to the expected array type for Map constructor
           const loadedItems = new Map(JSON.parse(storedCart) as Array<[string, { product: Product; quantity: number }]>);
           set({
             items: loadedItems,

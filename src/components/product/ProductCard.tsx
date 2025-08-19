@@ -7,7 +7,7 @@ import { Button, Card } from "antd";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import React, { useCallback, useMemo } from 'react';
+import React, { useCallback } from 'react';
 
 
 export const ProductCard = React.memo(() => {

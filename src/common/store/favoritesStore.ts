@@ -28,7 +28,6 @@ export const useFavoritesStore = create<FavoritesState>((set, get) => ({
       const storedFavorites = localStorage.getItem(FAVORITES_STORAGE_KEY);
       if (storedFavorites) {
         try {
-          // Explicitly cast the parsed JSON to the expected array type for Map constructor
           const loadedItems = new Map(JSON.parse(storedFavorites) as Array<[string, Product]>);
           set({
             items: loadedItems,
