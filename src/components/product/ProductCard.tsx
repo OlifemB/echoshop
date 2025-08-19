@@ -7,29 +7,56 @@ import { Button, Card } from "antd";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import React, { useMemo } from 'react';
+import React, { useCallback, useMemo } from 'react';
 
 
-export const ProductCard: React.FC = () => {
-  const { products, loading, error } = useProductData();
-  const addItemToCart = useCartStore((state) => state.addItem);
-  const updateQuantity = useCartStore((state) => state.updateQuantity);
-  const cartItemsMap = useCartStore((state) => state.items);
-
-  const addFavorite = useFavoritesStore((state) => state.addFavorite);
-  const removeFavorite = useFavoritesStore((state) => state.removeFavorite);
-  const favoriteItemsMap = useFavoritesStore((state) => state.items);
+export const ProductCard = React.memo(() => {
   const router = useRouter();
   const { id } = router.query;
   const selectedProductId = typeof id === 'string' ? id : null;
 
-  const product = useMemo(() =>
-      products.find((p) => p.id === selectedProductId)
-    , [selectedProductId, products]);
+  const { product, loading, error } = useProductData(selectedProductId);
+
+  const addItemToCart = useCartStore(useCallback((state) => state.addItem, []));
+  const updateQuantity = useCartStore(useCallback((state) => state.updateQuantity, []));
+  const cartItemsMap = useCartStore(useCallback((state) => state.items, []));
+
+  const addFavorite = useFavoritesStore(useCallback((state) => state.addFavorite, []));
+  const removeFavorite = useFavoritesStore(useCallback((state) => state.removeFavorite, []));
+  const favoriteItemsMap = useFavoritesStore(useCallback((state) => state.items, []));
 
   const isProdFavorite = product ? favoriteItemsMap.has(product.id) : false;
   const currentCartItem = product ? cartItemsMap.get(product.id) : undefined;
   const currentQuantity = currentCartItem ? currentCartItem.quantity : 0;
+
+  const handleToggleFavorite = useCallback(() => {
+    if (product) { // Убедимся, что product существует
+      if (isProdFavorite) {
+        removeFavorite(product.id);
+      } else {
+        addFavorite(product);
+      }
+    }
+  }, [isProdFavorite, addFavorite, removeFavorite, product]);
+
+  const handleAddToCart = useCallback(() => {
+    if (product) { // Убедимся, что product существует
+      addItemToCart(product);
+    }
+  }, [addItemToCart, product]);
+
+  const handleUpdateQuantityMinus = useCallback(() => {
+    if (product) { // Убедимся, что product существует
+      updateQuantity(product.id, currentQuantity - 1);
+    }
+  }, [updateQuantity, product, currentQuantity]);
+
+  const handleUpdateQuantityPlus = useCallback(() => {
+    if (product) { // Убедимся, что product существует
+      updateQuantity(product.id, currentQuantity + 1);
+    }
+  }, [updateQuantity, product, currentQuantity]);
+
 
   if (loading) {
     return <Spinner/>;
@@ -51,14 +78,6 @@ export const ProductCard: React.FC = () => {
       </div>
     );
   }
-
-  const handleToggleFavorite = () => {
-    if (isProdFavorite) {
-      removeFavorite(product.id);
-    } else {
-      addFavorite(product);
-    }
-  };
 
   return (
     <Card className="w-full max-w-4xl rounded-lg shadow-xl p-6 md:p-8">
@@ -99,7 +118,7 @@ export const ProductCard: React.FC = () => {
                 type="primary"
                 size="large"
                 icon={<ShoppingCartOutlined/>}
-                onClick={() => addItemToCart(product)}
+                onClick={handleAddToCart}
                 className="flex-grow bg-blue-600 hover:bg-blue-700 rounded-lg py-3 px-6 text-lg font-semibold"
               >
                 Добавить в корзину
@@ -109,7 +128,7 @@ export const ProductCard: React.FC = () => {
                 <Button
                   icon={<MinusOutlined/>}
                   size="large"
-                  onClick={() => updateQuantity(product.id, currentQuantity - 1)}
+                  onClick={handleUpdateQuantityMinus}
                   disabled={currentQuantity <= 0}
                   className="rounded-lg py-3 px-6 text-lg font-semibold"
                 />
@@ -117,7 +136,7 @@ export const ProductCard: React.FC = () => {
                 <Button
                   icon={<PlusOutlined/>}
                   size="large"
-                  onClick={() => updateQuantity(product.id, currentQuantity + 1)}
+                  onClick={handleUpdateQuantityPlus}
                   className="rounded-lg py-3 px-6 text-lg font-semibold"
                 />
               </div>
@@ -146,4 +165,4 @@ export const ProductCard: React.FC = () => {
       </div>
     </Card>
   );
-};
+});
