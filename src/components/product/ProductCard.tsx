@@ -30,7 +30,7 @@ export const ProductCard = React.memo(() => {
   const currentQuantity = currentCartItem ? currentCartItem.quantity : 0;
 
   const handleToggleFavorite = useCallback(() => {
-    if (product) { // Убедимся, что product существует
+    if (product) {
       if (isProdFavorite) {
         removeFavorite(product.id);
       } else {
@@ -40,19 +40,19 @@ export const ProductCard = React.memo(() => {
   }, [isProdFavorite, addFavorite, removeFavorite, product]);
 
   const handleAddToCart = useCallback(() => {
-    if (product) { // Убедимся, что product существует
+    if (product) {
       addItemToCart(product);
     }
   }, [addItemToCart, product]);
 
   const handleUpdateQuantityMinus = useCallback(() => {
-    if (product) { // Убедимся, что product существует
+    if (product) {
       updateQuantity(product.id, currentQuantity - 1);
     }
   }, [updateQuantity, product, currentQuantity]);
 
   const handleUpdateQuantityPlus = useCallback(() => {
-    if (product) { // Убедимся, что product существует
+    if (product) {
       updateQuantity(product.id, currentQuantity + 1);
     }
   }, [updateQuantity, product, currentQuantity]);
