@@ -3,7 +3,6 @@ import React from 'react';
 import { Button } from "antd";
 import { isNil } from 'lodash'
 import { HeartOutlined } from "@ant-design/icons";
-import { useNavigation } from "@/common/hooks/useNavigation";
 import { useFavoritesStore } from "@/common/store";
 import { ProductListCard } from "@/components/product/ProductListCard";
 

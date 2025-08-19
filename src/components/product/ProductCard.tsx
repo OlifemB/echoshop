@@ -10,7 +10,7 @@ import { useRouter } from "next/router";
 import React, { useCallback } from 'react';
 
 
-export const ProductCard = React.memo(() => {
+export const ProductCard =() => {
   const router = useRouter();
   const { id } = router.query;
   const selectedProductId = typeof id === 'string' ? id : null;
@@ -165,4 +165,4 @@ export const ProductCard = React.memo(() => {
       </div>
     </Card>
   );
-});
+}

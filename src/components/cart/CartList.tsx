@@ -1,4 +1,3 @@
-import { useNavigation } from "@/common/hooks/useNavigation";
 import { useWindowSize } from "@/common/hooks/useWindowSize";
 import { useCartStore, useUserStore } from "@/common/store";
 import { Order } from "@/common/types";

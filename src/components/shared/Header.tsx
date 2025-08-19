@@ -45,19 +45,16 @@ export const Header: React.FC = () => {
     </Link>,
   }];
 
-  // Determine selected key based on current router path
   const selectedMenuKey = useMemo(() => {
     const currentPath = router.pathname;
-    // Check if the current path matches any of the menu item keys
     const matchedItem = menuItems.find(item => item.key === currentPath);
     if (matchedItem) {
       return matchedItem.key;
     }
-    // Handle dynamic routes like /product/[id]
     if (currentPath.startsWith('/product/')) {
-      return '/'; // Or a more specific key if you have a "Products" page in menu
+      return '/';
     }
-    return '/'; // Default to home
+    return '/';
   }, [router.pathname, menuItems]);
 
 
@@ -71,7 +68,7 @@ export const Header: React.FC = () => {
         <Menu
           theme="light"
           mode="horizontal"
-          selectedKeys={[selectedMenuKey]} // Use dynamic selected key
+          selectedKeys={[selectedMenuKey]}
           className="flex-grow justify-end !bg-transparent"
           style={{ minWidth: 0 }}
           items={menuItems}
