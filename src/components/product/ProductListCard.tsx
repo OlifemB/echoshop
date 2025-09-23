@@ -1,3 +1,5 @@
+'use client'
+
 import React from "react"
 import { Card, Button } from "antd"
 import Image from "next/image"
@@ -10,6 +12,7 @@ import {
   ShoppingCartOutlined
 } from "@ant-design/icons"
 import { Product } from "@/common/types"
+
 import { useCartStore, useFavoritesStore } from "@/common/store"
 import Link from "next/link"
 

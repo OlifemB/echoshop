@@ -1,8 +1,10 @@
+'use client'
+
 import Link from "next/link";
-import { useRouter } from "next/router";
-import React, { useMemo } from "react";
+import { usePathname } from "next/navigation";
+import React, { useEffect, useMemo } from "react";
 import { useCartStore, useFavoritesStore, useUserStore } from "@/common/store";
-import { Badge, Layout, Menu } from "antd";
+import { Badge, Menu } from "antd";
 import { HeartOutlined, HomeOutlined, ShoppingCartOutlined, UserOutlined } from "@ant-design/icons";
 
 export const Header: React.FC = () => {
@@ -13,58 +15,65 @@ export const Header: React.FC = () => {
     .from(state.items.values())
     .reduce((acc, item) => acc + item.quantity, 0));
 
-  const router = useRouter(); // Use useRouter to get current path
+  const pathname = usePathname();
 
-  const menuItems = [{
-    key: '/',
-    icon: <HomeOutlined/>,
-    label: <Link prefetch={true} href="/">
-      Главная
-    </Link>,
-  }, {
-    key: '/cart',
-    icon: <ShoppingCartOutlined/>,
-    label: <Link prefetch={true} href="/cart">
-      <Badge count={cartItemCount} offset={[10, 0]} showZero={false} size="small">
-        Корзина
-      </Badge>
-    </Link>,
-  }, {
-    key: '/favorites',
-    icon: <HeartOutlined/>,
-    label: <Link prefetch={true} href="/favorites">
-      <Badge count={favoriteItemCount} offset={[10, 0]} showZero={false} size="small">
-        Избранное
-      </Badge>
-    </Link>,
-  }, {
-    key: '/profile',
-    icon: <UserOutlined/>,
-    label: <Link prefetch={true} href="/profile">
-      {isLoggedIn ? 'Профиль' : 'Войти'}
-    </Link>,
-  }];
+  const initializeCart = useCartStore((state) => state.initializeFromLocalStorage);
+  const initializeFavorites = useFavoritesStore((state) => state.initializeFromLocalStorage);
+
+  useEffect(() => {
+    initializeCart();
+    initializeFavorites();
+  }, [initializeCart, initializeFavorites]);
+
+  const menuItems = [
+    {
+      key: '/',
+      icon: <HomeOutlined />,
+      label: <Link href="/">Главная</Link>,
+    },
+    {
+      key: '/cart',
+      icon: <ShoppingCartOutlined />,
+      label: (
+        <Link href="/cart">
+          <Badge count={cartItemCount} offset={[10, 0]} size="small">
+            Корзина
+          </Badge>
+        </Link>
+      ),
+    },
+    {
+      key: '/favorites',
+      icon: <HeartOutlined />,
+      label: (
+        <Link href="/favorites">
+          <Badge count={favoriteItemCount} offset={[10, 0]} size="small">
+            Избранное
+          </Badge>
+        </Link>
+      ),
+    },
+    {
+      key: '/profile',
+      icon: <UserOutlined />,
+      label: <Link href="/profile">{isLoggedIn ? 'Профиль' : 'Войти'}</Link>,
+    },
+  ];
 
   const selectedMenuKey = useMemo(() => {
-    const currentPath = router.pathname;
-    const matchedItem = menuItems.find(item => item.key === currentPath);
-    if (matchedItem) {
-      return matchedItem.key;
-    }
-    if (currentPath.startsWith('/product/')) {
-      return '/';
-    }
+    if (!pathname) return '/';
+    const matchedItem = menuItems.find((item) => item.key === pathname);
+    if (matchedItem) return matchedItem.key;
+    if (pathname.startsWith('/product/')) return '/';
     return '/';
-  }, [router.pathname, menuItems]);
-
+  }, [pathname, menuItems]);
 
   return (
-    <Layout.Header className="shadow-md sticky top-0 z-20 !bg-white/50 backdrop-blur-xl">
-      <div className={'container flex items-center justify-between mx-auto flex-1'}>
+    <div className="shadow-md sticky top-0 z-20 !bg-white/50 backdrop-blur-xl">
+      <div className="container flex items-center justify-between mx-auto flex-1">
         <div className="text-xl font-bold text-blue-600 cursor-pointer">
-          <Link href="/">EchoShop</Link> {/* Link for logo */}
+          <Link href="/">EchoShop</Link>
         </div>
-
         <Menu
           theme="light"
           mode="horizontal"
@@ -74,6 +83,6 @@ export const Header: React.FC = () => {
           items={menuItems}
         />
       </div>
-    </Layout.Header>
-  )
-}
+    </div>
+  );
+};

@@ -1,4 +1,5 @@
-import { useRouter } from "next/router";
+'use client'
+
 import React, { useState } from 'react';
 import { Avatar, Button, Card, Input, List, message, Modal } from "antd";
 import { UserOutlined } from "@ant-design/icons";
@@ -10,7 +11,6 @@ export const Profile: React.FC = () => {
   const logout = useUserStore((state) => state.logout);
   const [isAuthModalVisible, setIsAuthModalVisible] = useState(false);
   const [emailInput, setEmailInput] = useState('');
-  const router = useRouter();
 
   const handleLogin = () => {
     if (emailInput) {

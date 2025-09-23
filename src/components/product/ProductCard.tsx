@@ -1,3 +1,5 @@
+'use client'
+
 import { useProductData } from "@/common/hooks/useProductData";
 import { useCartStore, useFavoritesStore } from "@/common/store";
 import { ErrorComponent } from "@/components/shared/Error";
@@ -12,14 +14,12 @@ import {
   ShoppingCartOutlined
 } from "@ant-design/icons";
 import Link from "next/link";
-import { useRouter } from "next/router";
+import { useParams } from "next/navigation";
 import React, { useCallback } from 'react';
 
-
 export const ProductCard = () => {
-  const router = useRouter();
-  const { id } = router.query;
-  const selectedProductId = typeof id === 'string' ? id : null;
+  const params = useParams();
+  const selectedProductId = typeof params?.id === "string" ? params.id : null;
 
   const { product, loading, error } = useProductData(selectedProductId);
 
@@ -64,13 +64,8 @@ export const ProductCard = () => {
   }, [updateQuantity, product, currentQuantity]);
 
 
-  if (loading) {
-    return <Spinner/>;
-  }
-
-  if (error) {
-    return <ErrorComponent message={error}/>;
-  }
+  if (loading) return <Spinner tip={"Загрузка данных..."}/>;
+  if (error) return <ErrorComponent message={error}/>;
 
   if (!product) {
     return (
@@ -108,15 +103,15 @@ export const ProductCard = () => {
             <p className="text-gray-700 text-lg mb-6 leading-relaxed">{product.description}</p>
             <div className="flex items-start justify-start flex-col mb-6">
               <span className="text-lg text-gray-500">
-                  Категория: <span className="font-semibold">{product.category}</span>
+                Категория: <span className="font-semibold">{product.category}</span>
               </span>
               <span className="text-lg text-gray-500">
-                  Бренд: <span className="font-semibold">{product.brand}</span>
+                Бренд: <span className="font-semibold">{product.brand}</span>
               </span>
             </div>
             <span className="text-4xl font-bold text-blue-700 mr-3">
-                {product.price.toFixed(2)} $
-              </span>
+              {product.price.toFixed(2)} $
+            </span>
           </div>
           <div className="flex flex-col sm:flex-row gap-4 mt-6">
             {currentQuantity === 0 ? (
@@ -171,4 +166,4 @@ export const ProductCard = () => {
       </div>
     </Card>
   );
-}
+};

@@ -1,3 +1,5 @@
+'use client'
+
 import { useWindowSize } from "@/common/hooks/useWindowSize";
 import { useCartStore, useUserStore } from "@/common/store";
 import { Order } from "@/common/types";
@@ -6,7 +8,7 @@ import { Button, List, message } from "antd";
 import { isNil } from "lodash";
 import Image from "next/image";
 import Link from "next/link";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import React from 'react';
 
 export const CartList: React.FC = () => {
@@ -18,7 +20,7 @@ export const CartList: React.FC = () => {
   const addOrder = useUserStore((state) => state.addOrder);
   const userEmail = useUserStore((state) => state.user.email);
   const router = useRouter();
-  const { isMobile } = useWindowSize()
+  const { isMobile } = useWindowSize();
 
   const handleCheckout = () => {
     if (cartItems.length === 0) {
@@ -27,7 +29,7 @@ export const CartList: React.FC = () => {
     }
     if (!userEmail) {
       message.error('Пожалуйста, войдите в систему, чтобы оформить заказ.');
-      router.push('/profile');
+      router.push('/profile'); // ✅ теперь работает в app router
       return;
     }
 
@@ -141,9 +143,7 @@ export const CartList: React.FC = () => {
             Оформить заказ
           </Button>
           <Link href="/" passHref>
-            <Button
-              className="w-full mt-4 rounded-md"
-            >
+            <Button className="w-full mt-4 rounded-md">
               Продолжить покупки
             </Button>
           </Link>

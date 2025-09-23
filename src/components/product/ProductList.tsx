@@ -1,3 +1,5 @@
+'use client'
+
 import React, { useMemo } from 'react';
 import { isNil } from 'lodash'
 import { useDebounce } from "@/common/hooks/useDebounce";
@@ -31,7 +33,7 @@ export const ProductList: React.FC = () => {
   }, [loading, products, searchTerm, selectedCategories, debouncedPriceRange, selectedBrands]);
 
   if (loading) {
-    return <Spinner/>;
+    return <Spinner tip={'"Загрузка данных..."'}/>;
   }
   if (error) {
     return <ErrorComponent message={error}/>;

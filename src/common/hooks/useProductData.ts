@@ -1,3 +1,5 @@
+'use client'
+
 import { DummyJsonProduct, Product } from "@/common/types"
 import { message } from "antd"
 import { useEffect, useState } from "react"

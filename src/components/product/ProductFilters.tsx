@@ -1,3 +1,6 @@
+'use client'
+
+import { isEmpty } from "lodash";
 import React, { useCallback, useEffect, useMemo } from 'react';
 import { Button, Input, Select, Slider } from "antd";
 import { SearchOutlined } from "@ant-design/icons";
@@ -23,11 +26,15 @@ export const ProductFilters = () => {
     return products.reduce((max, p) => Math.max(max, p.price), 0);
   }, [products]);
 
+  const minPrice = useMemo(() => {
+    return products.reduce((min, p) => Math.min(min, p.price), Infinity);
+  }, [products]);
+
   useEffect(() => {
     if (products.length > 0) {
-      setPriceRange([0, maxPrice]);
+      setPriceRange([minPrice, maxPrice]);
     }
-  }, [products, maxPrice, setPriceRange]);
+  }, [products, minPrice, maxPrice, setPriceRange]);
 
   const categories = useMemo(() => {
     const uniqueCategories = new Set(products.map((p) => p.category));
@@ -64,6 +71,7 @@ export const ProductFilters = () => {
       <div className="mb-4">
         <label htmlFor="category" className="block text-sm font-medium text-gray-700 mb-2">Категория</label>
         <Select
+          loading={!isEmpty(selectedCategories)}
           id="category"
           mode="multiple"
           placeholder="Выберите категории"
@@ -77,6 +85,7 @@ export const ProductFilters = () => {
       <div className="mb-4">
         <label htmlFor="brand" className="block text-sm font-medium text-gray-700 mb-2">Бренд</label>
         <Select
+          loading={!isEmpty(selectedBrands)}
           id="brand"
           mode="multiple"
           placeholder="Выберите бренды"
