@@ -18,6 +18,7 @@ export const ProductListCard: React.FC<{ product: Product }> = ({ product }) => 
   const addItemToCart = useCartStore((state) => state.addItem);
   const updateQuantity = useCartStore((state) => state.updateQuantity);
   const cartItemsMap = useCartStore((state) => state.items);
+
   const currentCartItem = cartItemsMap.get(product.id);
   const currentQuantity = currentCartItem ? currentCartItem.quantity : 0;
 

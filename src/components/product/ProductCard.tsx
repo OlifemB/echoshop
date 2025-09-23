@@ -2,15 +2,21 @@ import { useProductData } from "@/common/hooks/useProductData";
 import { useCartStore, useFavoritesStore } from "@/common/store";
 import { ErrorComponent } from "@/components/shared/Error";
 import { Spinner } from "@/components/shared/Spinner";
-import { HeartFilled, HeartOutlined, MinusOutlined, PlusOutlined, ShoppingCartOutlined } from "@ant-design/icons";
 import { Button, Card } from "antd";
 import Image from "next/image";
+import {
+  HeartFilled,
+  HeartOutlined,
+  MinusOutlined,
+  PlusOutlined,
+  ShoppingCartOutlined
+} from "@ant-design/icons";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import React, { useCallback } from 'react';
 
 
-export const ProductCard =() => {
+export const ProductCard = () => {
   const router = useRouter();
   const { id } = router.query;
   const selectedProductId = typeof id === 'string' ? id : null;
