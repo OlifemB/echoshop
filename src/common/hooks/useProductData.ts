@@ -21,7 +21,6 @@ export const useProductData = (productId?: string | null) => {
 
         if (productId) {
           url = `https://dummyjson.com/products/${productId}`;
-          message.info(`Загрузка товара ${productId} с сервера...`);
           const response = await fetch(url);
           if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
@@ -36,10 +35,8 @@ export const useProductData = (productId?: string | null) => {
             category: data.category,
             brand: data.brand,
           }];
-          message.success(`Товар ${data.title} успешно загружен!`);
         } else {
           url = 'https://dummyjson.com/products?limit=100';
-          message.info('Загрузка всех товаров с сервера...');
           const response = await fetch(url);
           if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
@@ -54,7 +51,6 @@ export const useProductData = (productId?: string | null) => {
             category: p.category,
             brand: p.brand,
           }));
-          message.success('Все товары успешно загружены с сервера!');
         }
         setProducts(loadedProducts);
       } catch (e: unknown) {

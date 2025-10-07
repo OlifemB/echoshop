@@ -1,0 +1,290 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="610e5f87-91db-4b45-99d5-49924ada4015" name="Changes" comment="App router">
+      <change afterPath="$PROJECT_DIR$/.idea/codeStyles/codeStyleConfig.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/easycode.ignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/common/hooks/useProductData.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/common/hooks/useProductData.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/product/ProductFilters.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/product/ProductFilters.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/product/ProductList.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/product/ProductList.tsx" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {}
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/OlifemB/echoshop.git&quot;,
+    &quot;accountId&quot;: &quot;5ca3e632-8b5c-4e7d-b693-b3486b144287&quot;
+  }
+}</component>
+  <component name="ProjectColorInfo">{
+  &quot;customColor&quot;: &quot;&quot;,
+  &quot;associatedIndex&quot;: 1
+}</component>
+  <component name="ProjectId" id="309VpwPAVtPMSbp5SBIYWtW9Ggj" />
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
+    &quot;js.debugger.nextJs.config.created.client&quot;: &quot;true&quot;,
+    &quot;js.debugger.nextJs.config.created.server&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;npm.Next.js: server-side.executor&quot;: &quot;Run&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
+    &quot;ts.external.directory.path&quot;: &quot;D:\\Peojects\\webstore2\\node_modules\\typescript\\lib&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  }
+}</component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="D:\Peojects\webstore2\src\common" />
+      <recent name="D:\Peojects\webstore2\src\common\vectors" />
+      <recent name="D:\Peojects\webstore2\src\app" />
+      <recent name="D:\Peojects\webstore2\src" />
+      <recent name="D:\Peojects\webstore2\src\common\styles" />
+    </key>
+  </component>
+  <component name="RunManager" selected="npm.Next.js: server-side">
+    <configuration name="Next.js: debug client-side" type="JavascriptDebugType" uri="http://localhost:3000/">
+      <method v="2" />
+    </configuration>
+    <configuration name="Next.js: server-side" type="js.build_tools.npm">
+      <package-json value="$PROJECT_DIR$/package.json" />
+      <command value="run" />
+      <scripts>
+        <script value="dev" />
+      </scripts>
+      <node-interpreter value="project" />
+      <envs />
+      <method v="2" />
+    </configuration>
+  </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-js-predefined-d6986cc7102b-b26f3e71634d-JavaScript-WS-251.26094.131" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="610e5f87-91db-4b45-99d5-49924ada4015" name="Changes" comment="" />
+      <created>1753039962089</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1753039962089</updated>
+      <workItem from="1753039963563" duration="5369000" />
+      <workItem from="1753089372819" duration="10000" />
+      <workItem from="1753112797892" duration="11000" />
+      <workItem from="1753175039300" duration="25771000" />
+      <workItem from="1753260864512" duration="7601000" />
+      <workItem from="1753269310225" duration="29901000" />
+      <workItem from="1753421671712" duration="4834000" />
+      <workItem from="1755262022173" duration="3002000" />
+      <workItem from="1755622516100" duration="4110000" />
+      <workItem from="1755755997054" duration="2993000" />
+      <workItem from="1756222092126" duration="212000" />
+      <workItem from="1756669190586" duration="2137000" />
+      <workItem from="1758236078391" duration="8000" />
+      <workItem from="1758627343451" duration="801000" />
+      <workItem from="1758628170280" duration="26000" />
+      <workItem from="1758628221907" duration="13000" />
+      <workItem from="1758628250756" duration="4109000" />
+      <workItem from="1759139581452" duration="3760000" />
+      <workItem from="1759772079818" duration="6328000" />
+    </task>
+    <task id="LOCAL-00001" summary="init">
+      <option name="closed" value="true" />
+      <created>1753185354788</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1753185354788</updated>
+    </task>
+    <task id="LOCAL-00002" summary="init">
+      <option name="closed" value="true" />
+      <created>1753190325544</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1753190325544</updated>
+    </task>
+    <task id="LOCAL-00003" summary="init">
+      <option name="closed" value="true" />
+      <created>1753195707119</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1753195707119</updated>
+    </task>
+    <task id="LOCAL-00004" summary="init">
+      <option name="closed" value="true" />
+      <created>1753196422217</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1753196422217</updated>
+    </task>
+    <task id="LOCAL-00005" summary="init">
+      <option name="closed" value="true" />
+      <created>1753197057142</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1753197057142</updated>
+    </task>
+    <task id="LOCAL-00006" summary="fix pages">
+      <option name="closed" value="true" />
+      <created>1753341595916</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1753341595916</updated>
+    </task>
+    <task id="LOCAL-00007" summary="fix useFavoritesStore &amp; cartStore">
+      <option name="closed" value="true" />
+      <created>1753383109312</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1753383109312</updated>
+    </task>
+    <task id="LOCAL-00008" summary="fix drop filters">
+      <option name="closed" value="true" />
+      <created>1753385268559</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1753385268559</updated>
+    </task>
+    <task id="LOCAL-00009" summary="add +- to ProductCard &amp; ProductListCard">
+      <option name="closed" value="true" />
+      <created>1753387403109</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1753387403109</updated>
+    </task>
+    <task id="LOCAL-00010" summary="useWindowSize">
+      <option name="closed" value="true" />
+      <created>1753450473479</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1753450473479</updated>
+    </task>
+    <task id="LOCAL-00011" summary="load single product on ProductDetailPage">
+      <option name="closed" value="true" />
+      <created>1755624648541</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1755624648541</updated>
+    </task>
+    <task id="LOCAL-00012" summary="load single product on ProductDetailPage">
+      <option name="closed" value="true" />
+      <created>1755624819455</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1755624819455</updated>
+    </task>
+    <task id="LOCAL-00013" summary="load single product on ProductDetailPage">
+      <option name="closed" value="true" />
+      <created>1755624848913</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1755624848913</updated>
+    </task>
+    <task id="LOCAL-00014" summary="load single product on ProductDetailPage">
+      <option name="closed" value="true" />
+      <created>1755625166578</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1755625166578</updated>
+    </task>
+    <task id="LOCAL-00015" summary="init for page router">
+      <option name="closed" value="true" />
+      <created>1758628063348</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1758628063348</updated>
+    </task>
+    <task id="LOCAL-00016" summary="init for app router">
+      <option name="closed" value="true" />
+      <created>1758631746794</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1758631746794</updated>
+    </task>
+    <task id="LOCAL-00017" summary="fix priceRange">
+      <option name="closed" value="true" />
+      <created>1758631917766</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1758631917766</updated>
+    </task>
+    <task id="LOCAL-00018" summary="App router">
+      <option name="closed" value="true" />
+      <created>1759140143209</created>
+      <option name="number" value="00018" />
+      <option name="presentableId" value="LOCAL-00018" />
+      <option name="project" value="LOCAL" />
+      <updated>1759140143209</updated>
+    </task>
+    <option name="localTasksCounter" value="19" />
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="init" />
+    <MESSAGE value="fix pages" />
+    <MESSAGE value="fix useFavoritesStore &amp; cartStore" />
+    <MESSAGE value="fix drop filters" />
+    <MESSAGE value="add +- to ProductCard &amp; ProductListCard" />
+    <MESSAGE value="useWindowSize" />
+    <MESSAGE value="load single product on ProductDetailPage" />
+    <MESSAGE value="init for page router" />
+    <MESSAGE value="init for app router" />
+    <MESSAGE value="fix priceRange" />
+    <MESSAGE value="App router" />
+    <option name="LAST_COMMIT_MESSAGE" value="App router" />
+  </component>
+</project>

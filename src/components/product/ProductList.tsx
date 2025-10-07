@@ -18,6 +18,7 @@ export const ProductList: React.FC = () => {
   const filteredProducts = useMemo(() => {
     if (loading) return [];
 
+    // !!! FIX HERE TO FETCH
     return products.filter((product) => {
       const matchesSearch = searchTerm
         ? product.name.toLowerCase().includes(searchTerm.toLowerCase())

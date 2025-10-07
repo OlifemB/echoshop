@@ -60,6 +60,7 @@ export const ProductFilters = () => {
         <label htmlFor="search" className="block text-sm font-medium text-gray-700 mb-2">Поиск по названию</label>
         <Input
           id="search"
+          allowClear
           placeholder="Введите название товара"
           prefix={<SearchOutlined/>}
           value={searchTerm}
@@ -71,7 +72,8 @@ export const ProductFilters = () => {
       <div className="mb-4">
         <label htmlFor="category" className="block text-sm font-medium text-gray-700 mb-2">Категория</label>
         <Select
-          loading={!isEmpty(selectedCategories)}
+          loading={isEmpty(categories)}
+          allowClear
           id="category"
           mode="multiple"
           placeholder="Выберите категории"
@@ -85,7 +87,8 @@ export const ProductFilters = () => {
       <div className="mb-4">
         <label htmlFor="brand" className="block text-sm font-medium text-gray-700 mb-2">Бренд</label>
         <Select
-          loading={!isEmpty(selectedBrands)}
+          allowClear
+          loading={isEmpty(brands)}
           id="brand"
           mode="multiple"
           placeholder="Выберите бренды"
